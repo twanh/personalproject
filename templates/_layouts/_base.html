@@ -1,0 +1,35 @@
+{% load static %}
+{% load compress %}
+
+{# VARIABLES #}
+{% with default_title="Title" app_name='Game.com' %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	{# Include default css, meta, etc... #}
+	{% include "_includes/_defaults/_head.html" %}</head>
+<body>
+	{% block nav %}
+		{% include "_includes/_components/_nav.html" %}
+	{% endblock nav %}
+	
+	{% block content %}
+		<div class="container" style="height:2000px;">
+			{% include "_includes/_components/_searchbar-full.html" %}
+		</div>
+	{% endblock content %}
+	
+	{% block footer %}
+		{% include "_includes/_components/_footer.html" %}
+	{% endblock footer %}
+
+	{# Include Scripts and block extra_scripts #}
+	{% include "_includes/_defaults/_scripts.html" %}
+</body>
+</html>
+
+
+{# END Variables #}
+{%endwith%}

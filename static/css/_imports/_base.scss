@@ -1,0 +1,104 @@
+//
+// ##################
+// #    MIXINS		#
+// ##################
+//
+
+// Auto Center
+@mixin push--auto {
+    margin: { 
+        left: auto;
+        right: auto;
+    }
+}
+
+// Default Dropshadow
+@mixin drop-shadow($x:0px, $y:3px, $b:6px, $spread:0px, $color:rgba(0, 0, 0, 0.18) ){
+	-webkit-box-shadow: $x $y $b $spread $color;
+    -moz-box-shadow: $x $y $b $spread $color;
+    box-shadow: $x $y $b $spread $color;
+}
+
+@mixin font--roboto($weight:300, $size:13px){
+	font-family: 'Roboto', sans-serif;
+	font-weight: $weight; // Regular
+	font-size: $size; 
+}
+
+@mixin font--mono($weight:300){
+	font-family: 'Roboto Mono', monospace;
+	font-weight: $weight; // Regular
+}
+
+// Hide 
+@mixin hidden {
+	display: none;
+	visibility: hidden;
+}
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+      -ms-border-radius: $radius;
+          border-radius: $radius;
+}
+
+//
+// ##################
+// # DEFAULT STYLES #
+// ##################
+//
+
+*{
+	color: $base-text-color;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 300; // Regular
+	font-size: 13px;
+}
+
+
+body{
+	background-color: $background-color;
+}
+
+
+h1,h2,h3,h4,h5,h6{
+	color: $base-text-color;
+}
+
+h1{
+	@include font--roboto($size:56px);
+}
+
+h2{
+	@include font--roboto($size:45px);
+}
+
+h3{
+	@include font--roboto($size:34px);
+}
+
+h4{
+	@include font--roboto($size:24px);
+}
+
+h5{
+	@include font--roboto($size:20px);
+}
+
+h6{
+	@include font--roboto($size:16px);
+}
+
+p{
+	@include font--roboto($size:13px);
+}
+
+
+.mono{
+	@include font--mono()
+}
+
+.default-bg{
+	background-color: $background-color;
+}

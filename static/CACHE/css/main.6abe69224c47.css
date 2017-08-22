@@ -1,0 +1,14 @@
+/* line 28, static/css/_imports/_base.scss */
+* {
+  color: #EFEFEF;
+  font-family: 'Roboto', sans-serif;
+  font-size: 13px; }
+
+/* line 34, static/css/_imports/_base.scss */
+body {
+  background-color: #444444; }
+
+/* line 38, static/css/_imports/_base.scss */
+.mono {
+  font-family: 'Roboto Mono', monospace;
+  color: inherit; }

@@ -1,0 +1,17 @@
+// .navbar-mid{
+//     display: inline-block;
+//     margin-left: 50%;
+//     transform: translateX(-50%);
+// }
+
+.navbar-nav {
+    float:none;
+    margin:0 auto;
+    display: block;
+    text-align: center;
+}
+
+.navbar-nav > li {
+    display: inline-block;
+    float:none;
+}

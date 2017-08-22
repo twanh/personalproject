@@ -1,0 +1,38 @@
+.footer{
+	padding: 10px;
+	border-top:3px solid $color-dark-accent;
+	.footer-section{
+		&:nth-child(2){
+			text-align: center;
+		}
+		&:nth-child(3){
+			text-align: right;
+
+			ul{
+				list-style: none;
+			}
+		}
+	}
+	
+	@media only screen and (max-width : 991px) {
+		.footer-section{
+			&:nth-child(1){
+			text-align: center;
+			.search{
+				text-align: left;
+			}
+			}
+			&:nth-child(3){
+			text-align: center;
+			}
+		}
+	.search-bar-footer{
+		margin: auto;
+}	
+	}	
+}
+
+.footer-container{
+	max-width: 1200px;
+	margin: auto;
+}

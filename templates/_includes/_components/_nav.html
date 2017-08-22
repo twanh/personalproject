@@ -1,0 +1,21 @@
+<nav class="navbar navbar-default default-bg">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">{% block nav_title %}{{app_name}}{% endblock nav_title %}</a>
+    </div>
+    
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-mid">
+        <li>{% include "_includes/_components/_searchbar-small.html" %}</li>
+        <!-- TODO: Fix Deals folding on mobile -->
+        <li class="navbar-right"><a href="#">Deals</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
