@@ -35,7 +35,7 @@ class G2a:
         Returns:
             (list) The results
         Raises:
-            None
+            CrawlRequestError
         '''
 
         # This list is used to store the results
@@ -59,7 +59,7 @@ class G2a:
 
         else:
             data = ''
-            
+
             # Raise a CrawlRequestError
             raise CrawlRequestError('Request had code: {} and failed'.format(r.status_code))
 
