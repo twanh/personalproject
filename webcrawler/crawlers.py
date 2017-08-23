@@ -1,7 +1,17 @@
 import json
 from json.decoder import JSONDecodeError
 
+from bs4 import BeautifulSoup as bs
+
+from django.core.validators import URLValidator
+from django.core.exceptions import ValidationError
+
 import requests
+
+
+
+
+URL_VALIDATOR = URLValidator(verify_exists=False)
 
 class CrawlRequestError(Exception):
     ''' 
@@ -9,6 +19,11 @@ class CrawlRequestError(Exception):
     specificly when the request goes wrong. 
     '''
     pass
+
+class CrawlUrlError(Exception):
+    " Raise when the url is wrong "
+    pass
+
 
 class CrawlNoResultsError(Exception):
     " Raise when there are nor results when crawling "
@@ -32,8 +47,90 @@ class G2a:
             (dict) The relevant information
         Raises:
             CrawlRequestError: When the request went wrong
-            CrawNoResultsError: When there are no results
+            CrawlDataError: When there is a problem with the data
         '''
+
+        # Check if the url is a valid url
+        # We do this to ensure that we will request a good url
+        # And to save data/resources when handleling a lot of requests
+        try:
+            URL_VALIDATOR(url)
+        except ValidationError:
+            raise CrawlUrlError('No valid url')
+        
+        # Variable delcaration
+        game_name = None
+        game_lowest_price = None
+        game_desc = None
+        game_desc_text = None
+        game_img_url = None
+        game_slider_img_url = None
+
+        r = requests.get(url)
+
+        # We check if the request wa sucessfull,
+        # If it was sucess full we create the data variable which holds the returned content
+        if r.status_code == requests.codes.ok:
+            data = r.text
+        else:
+            data = None
+            # Raise a CrawlRequestError
+            raise CrawlRequestError('Request had code: {} and failed'.format(r.status_code))
+
+        # We create a soup obj from the data returned from the request
+        # Lxml is used by bs to parse the html
+        soup = bs(data, 'lxml')
+
+        # Get the game title
+        # find the <div class='nameContent>
+        # The divs only child is a h1 which we select with .contents
+        # We extract the value of the h1 with .string
+        game_name = None
+        game_name = soup.find_all(class_='nameContent').contents[0].string
+        
+        # Get the lowest price (tag; div)
+        # It is the seccond (1) because there are two mp-lowestprice classes used
+        # The seccond one is more reliable because it is clearly shown on the page
+        # Then we find the <span class='mp-Price'> which contains the price
+        # We extract the value by using the .string
+        game_lowest_price = soup.find_all(class_='mp-lowestPrice')[1]
+        game_lowest_price = game_lowest_price.find_all('span', class_='mp-Price').string
+
+        # Get the game description
+        # Find <div class='prodDetalisText'> the first one is the description
+        # Find the <p> containing the description
+        # The <p> contains tags like <strong> therefore we create a text only version
+        # Then we save the non text only's content
+        game_desc = soup.find_all(class_='prodDetalisText')[0]
+        game_desc = game_desc.find('p')
+        game_desc_text = game_desc.get_text()
+        game_desc = game_desc.content
+
+        # Get all the slider images
+        # The images are held in a ul which contains li's with img[src] containing the url
+        slider = soup.find_all(class_='cw-img-list')[0]
+        game_slider_lis = slider.find_all('li')
+        game_slider_img_url = []
+        for li in game_slider_lis:
+            img = li.find('img')['src']
+            game_slider_img_url.append(img)
+        
+        # Get the games image url
+        # Find the <div class='games-image'> 
+        # Get the <img src=x> and extract the src [src]
+        game_img_url = soup.find_all(class_='games-image')[0] # TODO check if the [0] matters
+        game_img_url = game_img_url.find('img')['src']
+
+        result = {
+            'name':       game_name,
+            'desc':       game_desc,        
+            'desc_text':  game_desc_text,
+            'img':        game_img_url,
+            'slider_img': game_slider_img_url,
+            'price':      game_lowest_price
+        }
+
+        return result
 
     def search(self, query):
         '''
