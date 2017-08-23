@@ -8,10 +8,7 @@ from django.core.exceptions import ValidationError
 
 import requests
 
-
-
-
-URL_VALIDATOR = URLValidator(verify_exists=False)
+URL_VALIDATOR = URLValidator()
 
 class CrawlRequestError(Exception):
     ''' 
@@ -60,7 +57,7 @@ class G2a:
         
         # Variable delcaration
         game_name = None
-        game_lowest_price = None
+        game_selected_price = None
         game_desc = None
         game_desc_text = None
         game_img_url = None
@@ -86,15 +83,12 @@ class G2a:
         # The divs only child is a h1 which we select with .contents
         # We extract the value of the h1 with .string
         game_name = None
-        game_name = soup.find_all(class_='nameContent').contents[0].string
+        game_name = soup.find_all(class_='nameContent')[0].find('h1').get_text().strip()
         
-        # Get the lowest price (tag; div)
-        # It is the seccond (1) because there are two mp-lowestprice classes used
-        # The seccond one is more reliable because it is clearly shown on the page
-        # Then we find the <span class='mp-Price'> which contains the price
-        # We extract the value by using the .string
-        game_lowest_price = soup.find_all(class_='mp-lowestPrice')[1]
-        game_lowest_price = game_lowest_price.find_all('span', class_='mp-Price').string
+        # Get the selected price (tag; div)
+        # We extract the value by using the .get_text()
+        # We use .strip() to get rid of exta spaces
+        game_selected_price = soup.find(class_='selected-price').get_text().replace('\u20AC', '').strip()
 
         # Get the game description
         # Find <div class='prodDetalisText'> the first one is the description
@@ -104,7 +98,7 @@ class G2a:
         game_desc = soup.find_all(class_='prodDetalisText')[0]
         game_desc = game_desc.find('p')
         game_desc_text = game_desc.get_text()
-        game_desc = game_desc.content
+        game_desc = game_desc.get_text().strip()
 
         # Get all the slider images
         # The images are held in a ul which contains li's with img[src] containing the url
@@ -127,7 +121,7 @@ class G2a:
             'desc_text':  game_desc_text,
             'img':        game_img_url,
             'slider_img': game_slider_img_url,
-            'price':      game_lowest_price
+            'price':      game_selected_price
         }
 
         return result
