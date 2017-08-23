@@ -59,14 +59,13 @@ class G2a:
 
         else:
             data = ''
+            
+            # Raise a CrawlRequestError
             raise CrawlRequestError('Request had code: {} and failed'.format(r.status_code))
 
         #  Convert the string from r.text to a python interpretable dict
         json_data = json.loads(data)
         
-        # Extract the number of results form the data
-        num_found = json_data['numFound']
-
         # Extract the actual games from the results
         # By looping over all the games 
         # For everygame we extract the name, price, slug and the small_img
@@ -86,6 +85,7 @@ class G2a:
                 'small_img': small_img
                 }
             
+            # Return
             results.append(current_game)
 
         return results
