@@ -1,4 +1,5 @@
 .DS_STORE
 db.sqlite3
 .vscode
-
+__pycache__
+webcrawler/__pycache__/crawler.cpython-36.pyc
