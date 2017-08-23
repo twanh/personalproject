@@ -1,4 +1,5 @@
 import json
+from json.decoder import JSONDecodeError
 
 import requests
 
@@ -9,6 +10,13 @@ class CrawlRequestError(Exception):
     '''
     pass
 
+class CrawlNoResultsError(Exception):
+    " Raise when there are nor results when crawling "
+    pass
+
+class CrawlDataError(Exception):
+    " Raise when the data type is not matched "
+    pass
 
 
 class G2a:
@@ -23,7 +31,8 @@ class G2a:
         Returns:
             (dict) The relevant information
         Raises:
-
+            CrawlRequestError: When the request went wrong
+            CrawNoResultsError: When there are no results
         '''
 
     def search(self, query):
@@ -35,7 +44,8 @@ class G2a:
         Returns:
             (list) The results
         Raises:
-            CrawlRequestError
+            CrawlRequestError: When the request went wrong
+            CrawlDataError: When there is a problem with the data
         '''
 
         # This list is used to store the results
@@ -58,14 +68,33 @@ class G2a:
             data = r.text[1:-1]
 
         else:
-            data = ''
-
+            data = None
             # Raise a CrawlRequestError
             raise CrawlRequestError('Request had code: {} and failed'.format(r.status_code))
 
-        #  Convert the string from r.text to a python interpretable dict
-        json_data = json.loads(data)
-        
+        # Check if data is valid
+        # So, data has to exist and be valid json
+        if data is not None:
+            if isinstance(data, str):
+                try:
+                    #  Convert the string from r.text to a python interpretable dict
+                    json_data = json.loads(data)
+
+                # We create an exeption for JSONDecodeError
+                # The JSONDecodeErro can ocur in json.loads 
+                # when the string is not utf-8
+                # It is appropiate to use here because we do not control the source
+                # of the string and therefor is is subject to change 
+                except JSONDecodeError as exep:
+                    raise CrawlDataError('JSONDecodeError: {}'.format(exep))
+            else:
+                # Data is not a string
+                raise CrawlDataError('Data inputed is not of type str')
+        else:
+            # When the data is none, non-existent
+            raise CrawlDataError('Data is not existent')
+
+
         # Extract the actual games from the results
         # By looping over all the games 
         # For everygame we extract the name, price, slug and the small_img
