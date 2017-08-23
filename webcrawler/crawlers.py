@@ -91,19 +91,3 @@ class G2a:
         return results
 
 
-'''
-# Testing
-g3a = G2a()
-s = g3a.search('gta')
-print('-'*10, end='\n')
-print('Type: {}'.format(type(s)))
-print('-'*10, end='\n')
-print('List: ', end='\n')
-print(str(s))
-print('-'*10, end='\n')
-for game in s:
-    print(game['name'])
-    print(game['price'])
-    print(game['url'])
-    print('-'*10)
-'''
