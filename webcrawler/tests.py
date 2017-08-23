@@ -36,4 +36,4 @@ def test_g2a_game():
     print('Price: {}'.format(game_info['price']))
     print('-'*10)
 
-test_g2a_search()
+test_g2a_game()
