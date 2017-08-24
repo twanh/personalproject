@@ -15,8 +15,15 @@
 		{% include "_includes/_components/_nav.html" %}
 	{% endblock nav %}
 	
-	{% block content %}
+	{% block all_content%}
+	<div class="container" style="height:100vh">
+		{% block content %}
 
+		{% endblock content %}
+	</div>
+	{% endblock %}
+
+	
 	{% block footer %}
 		{% include "_includes/_components/_footer.html" %}
 	{% endblock footer %}
