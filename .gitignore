@@ -5,3 +5,4 @@ __pycache__
 swebcrawler/__pycache__/crawler.cpython-36.pyc
 *.pyc
 *.pyo
+CACHE
