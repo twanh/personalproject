@@ -136,7 +136,7 @@
 	color: #2eb9ce;
 	z-index: -1;
 	width: 90%;
-	height: 100px;
+	height: 100px; //TODO Create breakpoints that change this...
 	margin: auto;
 	padding: 10px;
 	padding-top: 15px;
@@ -144,17 +144,24 @@
 	background: #FFFFFF;
 	@include border-radius(3px);
 
-	.form-control{
+	.search-form-select{
 		margin-top: 5px;
 		border: none;
 		@include border-radius(0px);
-		border-bottom: 2px solid $text-grey;
+		border-bottom: 2px solid material-color('teal', '200');
+		transition: .5s ease;
 		width: 50%;
 		height: 30%;
 		color: $text-grey;
-	}
 
+		option{
+			color: $text-grey;}
+	}
+	.form-control:hover{
+		border-bottom: 2px solid material-color('teal', '400');
+	}
 	.detail-search-title{
 		color: $text-grey;
 	}
 }
+
