@@ -216,4 +216,25 @@ class G2a:
 
         return results
 
+class Kinguin:
+    ''' Webcrawler for kinguin.net '''
 
+    def __init__(self, search_url):
+        ''' Retreive some basic variables and store them in the class scope  '''
+        self.SEARCH_BASE_URL = search_url
+
+    def game(self, url):
+        '''
+        Crawl the page of a certain game for relevant inforamtion
+
+        Args:
+            url: (str) The url to the specifics game's page
+        Returns:
+            (dict) The relevant information
+        Exceptions:
+
+        '''
+        pass
+
+    def search(self, query):
+        pass
