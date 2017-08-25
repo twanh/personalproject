@@ -10,6 +10,8 @@ import requests
 
 URL_VALIDATOR = URLValidator()
 
+G2A_DEFAULT_SEARCH_URL = 'https://g2a.com/lucene/search/filter?jsoncallback=&skip=&minPrice=0.00&maxPrice=1422.00&cc=NL&stock=all&event=&search={}&genre=0&cat=0&sortOrder=popularity+desc&start=0&rows=12&steam_app_id=&steam_category=&steam_prod_type=&includeOutOfStock=false&includeFreeGames=false&isWholesale=false&_=1503469082372'
+
 class CrawlRequestError(Exception):
     ''' 
     Raise when something goes wrong while crawling a page
@@ -33,6 +35,10 @@ class CrawlDataError(Exception):
 
 class G2a:
     '''Webcrawler for g2a.com'''
+
+    def __init__(self, search_url):
+        ''' Retrieve some basic variables '''
+        self.SEARCH_BASE_URL = search_url
 
     def game(self, url):
         '''
@@ -144,7 +150,7 @@ class G2a:
         results = []
 
         # Combine the user specified search query with the already predifinced url of g2a search api
-        url = 'https://g2a.com/lucene/search/filter?jsoncallback=&skip=&minPrice=0.00&maxPrice=1422.00&cc=NL&stock=all&event=&search={}&genre=0&cat=0&sortOrder=popularity+desc&start=0&rows=12&steam_app_id=&steam_category=&steam_prod_type=&includeOutOfStock=false&includeFreeGames=false&isWholesale=false&_=1503469082372'.format(query)
+        url = self.SEARCH_BASE_URL.format(query)
 
         # We use requests to 'request' the url and therefore return the content of the search
         r = requests.get(url)
