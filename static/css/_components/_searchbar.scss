@@ -163,5 +163,58 @@
 	.detail-search-title{
 		color: $text-grey;
 	}
+
+	.slider{
+		#price-slider{
+			width: 70%;
+			display: inline-block;
+			margin-top: 30px;
+			border: none;
+			// .noUi-base{
+			// 	height: 10%;
+			// }
+
+		}
+		#price-slider.noUi-target{
+			border: none;
+			background-color: material-color('teal', '200');
+			box-shadow: none
+
+			
+		}
+		.noUi-horizontal{
+			height: 10px;
+		}
+		.noUi-connect{
+			box-shadow: none;
+		}
+		.noUi-handle { 
+			@include border-radius(50%);
+			border: none;
+			box-shadow: none;
+			background-color: material-color('teal', '500');
+			width: 15px;
+			height: 15px;
+			top: -3px;
+			left: 0px;
+			right: 0px;
+
+			&:after{
+				// display: none;
+				background: none;
+			}
+			&:before{
+				content: none;
+				background: none;
+			}
+		 }
+		
+		 #price-start {
+			color: $text-grey;
+		}
+		 #price-end{
+			color: $text-grey;
+		}
+	}
 }
 
