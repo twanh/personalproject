@@ -1,8 +1,11 @@
-// Colors
+// Use prebuild libary with material-design colors
+@import '_material-colors/_sass-material-colors';
 
+// Colors
 $background-color: #444444;
 $color-dark-accent: #414141;
 
+$green-accent: material-color('teal', '300');
 
 // TEXT
 $base-text-color: #EFEFEF;
