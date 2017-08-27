@@ -237,4 +237,14 @@ class Kinguin:
         pass
 
     def search(self, query):
+        '''
+        Craw, the search page for the given query and return all the results with relevant information
+
+        Args:
+            query: (str) The query to use to search (probably user submitted)
+        Return:
+            (list) Returns a list of dictionaries containing all the results with the relevant information in the dictionaries
+        Exceptions:
+        
+        '''
         pass
