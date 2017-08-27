@@ -15,11 +15,13 @@
 		{% include "_includes/_components/_nav.html" %}
 	{% endblock nav %}
 	
-	{% block content %}
-		<div class="container" style="height:2000px;">
-			{% include "_includes/_components/_searchbar-full.html" %}
-		</div>
-	{% endblock content %}
+	{% block all_content%}
+	<div class="container" style="height:100vh">
+		{% block content %}
+		{% endblock content %}
+	</div>
+	{% endblock %}
+
 	
 	{% block footer %}
 		{% include "_includes/_components/_footer.html" %}

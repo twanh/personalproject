@@ -5,7 +5,7 @@
 	color: $text-grey;
 
 	.search-bar{
-		@include border-radius(33px) 
+		@include border-radius(33px) ;
 		border-width: 0px;		
 		height: 25px;
 		max-width: 500px;
@@ -29,7 +29,7 @@
 	}
 	
 	.search-bar-footer{
-		@include border-radius(33px) 
+		@include border-radius(33px) ;
 		border-width: 0px;		
 		height: 25px;
 		max-width: 500px;
@@ -56,9 +56,9 @@
 		margin-left: 28px;
 		height: 25px;
 		width: 90%;
-		@include font--roboto(300, 13px)
+		@include font--roboto(300, 13px);
 		border: none;
-		@include border-radius(33px) 
+		@include border-radius(33px) ;
 		color: $text-grey;
 		padding: 5px;
 		
@@ -84,19 +84,22 @@
 
 
 .full-search{
+
 	color: $text-grey;
 	.full-searchbar{
+		@include drop-shadow();
+		z-index: 1;
 		position: relative;
 		width: 100%;
 		height: 50px;
 		background: #FFFFFF;
-		@include border-radius(33px)
+		@include border-radius(33px);
 
 		input[type='search']{
 			margin-left:30px;
 			height: 100%;
 			width: 90%;
-			@include border-radius(33px)
+			@include border-radius(33px);
 			padding: 10px;
 			color: $text-grey;
 			border: none;
@@ -130,9 +133,91 @@
 }
 
 .detail-search{
+	color: #2eb9ce;
+	z-index: -1;
 	width: 90%;
-	height: 100px;
+	height: 100px; //TODO Create breakpoints that change this...
 	margin: auto;
-	// background: #FFFFFF;
-	border: 3px solid green;
+	padding: 10px;
+	padding-top: 15px;
+	margin-top: -10px;
+	background: #FFFFFF;
+	@include border-radius(3px);
+
+	.search-form-select{
+		margin-top: 5px;
+		border: none;
+		@include border-radius(0px);
+		border-bottom: 2px solid material-color('teal', '200');
+		transition: .5s ease;
+		width: 50%;
+		height: 30%;
+		color: $text-grey;
+
+		option{
+			color: $text-grey;}
+	}
+	.form-control:hover{
+		border-bottom: 2px solid material-color('teal', '400');
+	}
+	.detail-search-title{
+		color: $text-grey;
+	}
+
+	.slider{
+		#price-slider{
+			width: 70%;
+			display: inline-block;
+			margin-top: 30px;
+			border: none;
+			// .noUi-base{
+			// 	height: 10%;
+			// }
+
+		}
+		#price-slider.noUi-target{
+			border: none;
+			background-color: material-color('teal', '200');
+			box-shadow: none
+
+			
+		}
+		.noUi-horizontal{
+			height: 10px;
+		}
+		.noUi-connect{
+			box-shadow: none;
+		}
+		.noUi-handle { 
+			@include border-radius(50%);
+			border: none;
+			box-shadow: none;
+			background-color: material-color('teal', '500');
+			width: 15px;
+			height: 15px;
+			top: -3px;
+			left: 0px;
+			right: 0px;
+
+			&:after{
+				// display: none;
+				background: none;
+			}
+			&:before{
+				content: none;
+				background: none;
+			}
+		 }
+		
+		 #price-start {
+			color: $text-grey;
+		}
+		 #price-end{
+			color: $text-grey;
+		}
+	}
+	.float-right{
+		float: right;
+	}
 }
+
