@@ -153,6 +153,7 @@ class G2a:
 
         # Combine the user specified search query with the already predifinced url of g2a search api
         # TODO: Replace spaces with %20
+        query = query.replace(' ', '%20')
         url = self.SEARCH_BASE_URL.format(query)
 
         # We use requests to 'request' the url and therefore return the content of the search
