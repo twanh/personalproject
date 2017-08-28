@@ -152,8 +152,7 @@ class G2a:
         results = []
 
         # Combine the user specified search query with the already predifinced url of g2a search api
-        # TODO: Replace spaces with %20
-        query = query.replace(' ', '%20')
+        query = query.replace(' ', '+')
         url = self.SEARCH_BASE_URL.format(query)
 
         # We use requests to 'request' the url and therefore return the content of the search
@@ -171,7 +170,8 @@ class G2a:
         else:
             data = None
             # Raise a CrawlRequestError
-            raise CrawlRequestError('Request had code: {} and failed'.format(r.status_code))
+            raise CrawlRequestError('Request went wrong with code: {}'.format(r.status_c))
+            
 
         # Check if data is valid
         # So, data has to exist and be valid json
@@ -242,13 +242,49 @@ class Kinguin:
 
     def search(self, query):
         '''
-        Craw, the search page for the given query and return all the results with relevant information
-
+        Crawl, the search page for the given query and return all the results with relevant information
         Args:
             query: (str) The query to use to search (probably user submitted)
         Return:
             (list) Returns a list of dictionaries containing all the results with the relevant information in the dictionaries
-        Exceptions:
-        
+        Exceptions:        
         '''
-        pass
+        
+        # The list that will be returned containing dictionaries with the search results
+        results = []
+
+        # Replace spaces in query with +
+        query = query.replace(' ', '+')
+        url = self.SEARCH_BASE_URL.format(query)
+
+        r = requests.get(url)
+
+        if r.status_code == requests.codes.ok:
+            html = r.text
+        else:
+            html = ''
+            raise CrawlRequestError('Request went wrong with code: {}'.format(r.status_c))
+        
+        soup = bs(html, 'lxml')
+
+        offerDeals = soup.find(id='offerDetails')
+        rows = offerDeals.find_all('row')
+        for row in rows:
+            img_url = row.find(class_='main-image').find('img')['src']
+            game_name_a = row.find(class_='product-name').find('a')
+            game_name = game_name_a.text.strip()
+            game_url = game_name_a['href']
+            prices = row.find(class_='new-price')
+            official_price = prices.find(class_='official-price').find(class_='price').text.strip()
+            offered_price = prices.find(class_='actual_price').find(class_='price')['data-no-tax-price']
+
+            current_game = {
+                'name': game_name,
+                'official_price': official_price,
+                'offered_price': offered_price,
+                'url': game_url,
+                'img_url': img_url,
+            }
+            results.append(current_game)
+
+        return results
