@@ -237,7 +237,7 @@ class Kinguin:
             (dict) The relevant information
         Exceptions:
 
-        '''
+        ''' 
         pass
 
     def search(self, query):
@@ -255,22 +255,36 @@ class Kinguin:
         results = []
 
         # Replace spaces in query with +
+        # Create the full url to the search page
         query = query.replace(' ', '+')
         url = self.SEARCH_BASE_URL.format(query)
         
+        # Uses request to request the url
         r = requests.get(url)
 
+        # Check the status code 
+        # To check if the request was sucessfull
+        # If the request failed return a CrawlRequestError
         if r.status_code == requests.codes.ok:
             html = r.text
         else:
             html = ''
             raise CrawlRequestError('Request went wrong with code: {}'.format(r.status_c))
         
+        # Convert the html into a beautifull soup obj
         soup = bs(html, 'lxml')
 
+        # Find the div with id=offerDetails
         offerDetails = soup.find(id='offerDetails')
+        # Find all rows (dict)
         rows = offerDetails.find_all(class_='row')
+
+        # Loop through the rows and extract information
         for row in rows:
+
+            # Try block to catch AttributeError s
+            # AttributeError occurs sometime when a tag is not found but still .find 
+            # Is used on the tag, in that case we do not want to stop the whole crawler
             try:
                 img_url = row.find(class_='main-image').find('img')['src']
                 game_name_a = row.find(class_='product-name').find('a')
@@ -281,7 +295,9 @@ class Kinguin:
                 offered_price = prices.find(class_='actual-price').find('span')['data-no-tax-price']
             except AttributeError:
                 pass
-                
+            
+            # Add all the inforamtion into a dict
+            # Then append the dict to the results list
             current_game = {
                 'name': game_name,
                 'official_price': official_price,
