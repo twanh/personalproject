@@ -50,6 +50,12 @@ class G2a:
             url: (str) The url of the game
         Returns:
             (dict) The relevant information
+                'name':       game_name,
+                'desc':       game_desc,        
+                'desc_text':  game_desc_text,
+                'img':        game_img_url,
+                'slider_img': game_slider_img_url,
+                'price':      game_selected_price
         Raises:
             CrawlRequestError: When the request went wrong
             CrawlDataError: When there is a problem with the data
@@ -235,8 +241,13 @@ class Kinguin:
             url: (str) The url to the specifics game's page
         Returns:
             (dict) The relevant information
+                 'name': game_name,
+                 'desc': game_desc,
+                 'img_url': game_img_url,
+                 'sys_req': game_sys_req,
+                 'price': game_price
         Exceptions:
-
+            CrawlRequestError: When the request failed
         ''' 
 
         result = {}
