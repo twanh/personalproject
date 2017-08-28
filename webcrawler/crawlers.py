@@ -248,6 +248,7 @@ class Kinguin:
         Return:
             (list) Returns a list of dictionaries containing all the results with the relevant information in the dictionaries
         Exceptions:        
+            CrawlRequestError: When the request to the url went wrong
         '''
         
         # The list that will be returned containing dictionaries with the search results
