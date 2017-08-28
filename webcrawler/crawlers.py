@@ -256,7 +256,7 @@ class Kinguin:
         # Replace spaces in query with +
         query = query.replace(' ', '+')
         url = self.SEARCH_BASE_URL.format(query)
-
+        
         r = requests.get(url)
 
         if r.status_code == requests.codes.ok:
@@ -267,17 +267,20 @@ class Kinguin:
         
         soup = bs(html, 'lxml')
 
-        offerDeals = soup.find(id='offerDetails')
-        rows = offerDeals.find_all('row')
+        offerDetails = soup.find(id='offerDetails')
+        rows = offerDetails.find_all(class_='row')
         for row in rows:
-            img_url = row.find(class_='main-image').find('img')['src']
-            game_name_a = row.find(class_='product-name').find('a')
-            game_name = game_name_a.text.strip()
-            game_url = game_name_a['href']
-            prices = row.find(class_='new-price')
-            official_price = prices.find(class_='official-price').find(class_='price').text.strip()
-            offered_price = prices.find(class_='actual_price').find(class_='price')['data-no-tax-price']
-
+            try:
+                img_url = row.find(class_='main-image').find('img')['src']
+                game_name_a = row.find(class_='product-name').find('a')
+                game_name = game_name_a.text.strip()
+                game_url = game_name_a['href']
+                prices = row.find(class_='new-price')
+                official_price = prices.find(class_='official-price').find_all('span', class_='price')[1].text.strip().replace('\u20ac', '')
+                offered_price = prices.find(class_='actual-price').find('span')['data-no-tax-price']
+            except AttributeError:
+                pass
+                
             current_game = {
                 'name': game_name,
                 'official_price': official_price,
