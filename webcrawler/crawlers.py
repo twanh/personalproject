@@ -238,7 +238,49 @@ class Kinguin:
         Exceptions:
 
         ''' 
-        pass
+
+        result = {}
+        
+        r = requests.get(url)
+
+        if r.status_code == requests.status_codes.ok:
+            html = r.text
+        else:
+            html = ''
+            raise CrawlRequestError('Request went wrong with code: {}'.format(r.status_c))
+
+        game_name = None
+        game_desc = None
+        game_img_url = None
+        game_price = None
+        game_sys_req = None
+        game_slider_img = None
+        soup = bs(html)
+
+        game_name = soup.find(class_='product-name').text.strip()
+        game_price = soup.find(class_='category-page__price--price').text.strip()
+        game_desc = soup.find(class_='category-page__category-description').find('p').text.strip()
+        game_sys_req = soup.find(class_='category-page__category-description').find_all('ul')[1].text.strip()
+        game_img_url = soup.find(class_='category-page__main-image-wrapper').find('img')['src']
+        
+        game_slider_img = []
+        img_slider = soup.find(class_='owl-stage-outer').find_all(class_='owl-item')
+        for owl_item in img_slider:
+            url = owl_item.find('a')['href']
+            game_slider_img.append(url)
+
+
+        result = {
+            'name': game_name,
+            'desc': game_desc,
+            'img_url': game_img_url,
+            'sys_req': game_sys_req,
+            'price': game_price,
+            'slider_img': game_slider_img
+        }
+
+        return result
+        
 
     def search(self, query):
         '''
