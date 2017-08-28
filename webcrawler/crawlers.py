@@ -243,7 +243,7 @@ class Kinguin:
         
         r = requests.get(url)
 
-        if r.status_code == requests.status_codes.ok:
+        if r.status_code == requests.codes.ok:
             html = r.text
         else:
             html = ''
@@ -254,20 +254,14 @@ class Kinguin:
         game_img_url = None
         game_price = None
         game_sys_req = None
-        game_slider_img = None
         soup = bs(html)
 
         game_name = soup.find(class_='product-name').text.strip()
-        game_price = soup.find(class_='category-page__price--price').text.strip()
+        game_price = soup.find(class_='category-page__price--price').text.strip().replace('\u20ac', '')
         game_desc = soup.find(class_='category-page__category-description').find('p').text.strip()
         game_sys_req = soup.find(class_='category-page__category-description').find_all('ul')[1].text.strip()
         game_img_url = soup.find(class_='category-page__main-image-wrapper').find('img')['src']
-        
-        game_slider_img = []
-        img_slider = soup.find(class_='owl-stage-outer').find_all(class_='owl-item')
-        for owl_item in img_slider:
-            url = owl_item.find('a')['href']
-            game_slider_img.append(url)
+
 
 
         result = {
@@ -275,8 +269,7 @@ class Kinguin:
             'desc': game_desc,
             'img_url': game_img_url,
             'sys_req': game_sys_req,
-            'price': game_price,
-            'slider_img': game_slider_img
+            'price': game_price
         }
 
         return result
