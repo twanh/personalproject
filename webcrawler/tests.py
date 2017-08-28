@@ -46,5 +46,11 @@ def kinguin_search():
     s =  json.dumps(search)
     print(s)
 
+def kinguin_game():
+    search_url = 'https://www.kinguin.net/catalogsearch/result/index/?p=1&q={}&order=bestseller&dir=desc&max_price=143&dir_metacritic=desc&hide_outstock=1'
+    url = 'https://www.kinguin.net/category/15836/grand-theft-auto-v-rockstar-digital-download-key/'
+    king = crawlers.Kinguin(search_url)
+    game = king.game(url)
+    print(game)
 
-kinguin_search()
+kinguin_game()
