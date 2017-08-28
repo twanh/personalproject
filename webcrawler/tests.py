@@ -1,4 +1,5 @@
 import crawlers
+import json
 
 # Testing
 def test_g2a_search():
@@ -36,4 +37,14 @@ def test_g2a_game():
     print('Price: {}'.format(game_info['price']))
     print('-'*10)
 
-test_g2a_game()
+def kinguin_search():
+    ''' Test the search crawling of the kinguin webcrawler '''
+    url = 'https://www.kinguin.net/catalogsearch/result/index/?p=1&q={}&order=bestseller&dir=desc&max_price=143&dir_metacritic=desc&hide_outstock=1'
+    query = 'grand theft auto'
+    king = crawlers.Kinguin(url)
+    search = king.search(query)
+    s =  json.dumps(search)
+    print(s)
+
+
+kinguin_search()
