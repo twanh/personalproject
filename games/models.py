@@ -87,23 +87,24 @@ class GameManager(models.Manager):
                 pass
         
         # TODO: Implement greenhouse, gamestop
-
+        # TODO: REMOVE 'x_price'
         new_game = Game(name = game_name,
                        desc = game_desc,
                        image_url = img_url,
-                       original_price = original_price,
+                       original_price = '0',
                        g2a_price = g2a_price,
                        g2a_url = g2a_url,
                        kinguin_price = kinguin_price,
                        kinguin_url = kinguin_url,
-                       greenman_price = greenman_price,
+                       greenman_price = 'greenman_price',
                        greenman_url = greenman_url,
-                       gamestop_price = gamestop_price,
+                       gamestop_price = 'gamestop_price',
                        gamestop_url = gamestop_url,
                        images = images
                        )
         new_game.save()
 
+        return new_game
             
 
 class Game(models.Model):
