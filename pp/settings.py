@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'compressor',
 
     # Apps
+    'games',
+    'sellers',
 ]
 
 MIDDLEWARE = [
