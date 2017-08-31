@@ -8,3 +8,6 @@ def test_gamemanager():
             'kinguin': 'https://www.kinguin.net/category/15836/grand-theft-auto-v-rockstar-digital-download-key/'}
     
     created = gm._create_from_crawl(name, urls)
+
+if __name__ == '__main__':
+    test_gamemanager()
