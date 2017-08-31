@@ -62,11 +62,6 @@ class GameManager(models.Manager):
                 for img in gta_results['slider_img']:
                     # images.append('"{}"'.format(img))
                     images.append(img)
-                    print(type(img))
-                    
-                    print(img)
-                    print (images)
-                
             except CrawlRequestError:
                 pass
             except CrawlDataError:
@@ -89,7 +84,9 @@ class GameManager(models.Manager):
 
             except CrawlRequestError:
                 pass
-                
+        
+        images = json.dumps(images)
+
         # TODO: Implement greenhouse, gamestop
         # TODO: REMOVE 'x_price'
         new_game = Game(name = game_name,

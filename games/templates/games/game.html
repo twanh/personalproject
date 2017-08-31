@@ -1,9 +1,58 @@
 {% extends "_layouts/_base.html" %}
 
 {% comment %} Obj name: game.* {% endcomment %}
+{% block extra_css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.2.0/ekko-lightbox.css">
+{% endblock extra_css %}
 
 {% block all_content %}
     {% comment %} Full header {% endcomment %}
+    {% comment %} <div class="game-header" style="background-image: url({{ game.image_url }})">
+        <h1>{{game.name}}</h1>
+    </div> {% endcomment %}
+
+    <div class="game-header">
+        <div class="background-image" style="background-image: url({{ game.image_url }})"></div>
+        <div class="content">
+            <h1>{{game.name}}</h1>
+        </div>
+    </div>
+    <div class="container" style='height:80vh'>
+        <div class="game-container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-12">
+                            {% if game.desc %}
+                                <h5 class="game-desc-header">Description:</h5>
+                                {{game.desc}}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:10px;">
+                        <div class="col-md-3">
+                            <h5 class="game-desc-header">Original Price:</h5>
+                            -
+                        </div>
+                        <div class="col-md-3">
+                            <h5 class="game-desc-header">Best Price:</h5>
+                            -
+                        </div>
+                        <div class="col-md-3">
+                            <h5 class="game-desc-header">User Rating:</h5>
+                            -
+                        </div>
+                        <div class="col-md-3">
+                            <h5 class="game-desc-header">Community Pages</h5>
+                            -
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">f</div>
+            </div>
+        </div>
+        
+    </div>
     {% comment %} Slider {% endcomment %}
 
     {% comment %} Desc etc {% endcomment %}

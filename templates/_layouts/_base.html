@@ -10,6 +10,9 @@
 <head>
 	{# Include default css, meta, etc... #}
 	{% include "_includes/_defaults/_head.html" %}</head>
+	{% block extra_css %}
+	
+	{% endblock extra_css %}
 <body>
 	{% block nav %}
 		{% include "_includes/_components/_nav.html" %}
@@ -29,6 +32,10 @@
 
 	{# Include Scripts and block extra_scripts #}
 	{% include "_includes/_defaults/_scripts.html" %}
+
+	{% block extra_scripts %}
+	
+	{% endblock extra_scripts %}
 </body>
 </html>
 
