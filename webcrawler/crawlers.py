@@ -265,7 +265,7 @@ class Kinguin:
         game_img_url = None
         game_price = None
         game_sys_req = None
-        soup = bs(html)
+        soup = bs(html, 'lxml')
 
         game_name = soup.find(class_='product-name').text.strip()
         game_price = soup.find(class_='category-page__price--price').text.strip().replace('\u20ac', '')
