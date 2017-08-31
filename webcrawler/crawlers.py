@@ -270,7 +270,7 @@ class Kinguin:
         game_name = soup.find(class_='product-name').text.strip()
         game_price = soup.find(class_='category-page__price--price').text.strip().replace('\u20ac', '')
         game_desc = soup.find(class_='category-page__category-description').find('p').text.strip()
-        game_sys_req = soup.find(class_='category-page__category-description').find_all('ul')[1].text.strip()
+        # game_sys_req = soup.find(class_='category-page__category-description').find_all('ul')[1].text.strip()
         game_img_url = soup.find(class_='category-page__main-image-wrapper').find('img')['src']
 
 
@@ -279,7 +279,7 @@ class Kinguin:
             'name': game_name,
             'desc': game_desc,
             'img_url': game_img_url,
-            'sys_req': game_sys_req,
+            # 'sys_req': game_sys_req,
             'price': game_price
         }
 
