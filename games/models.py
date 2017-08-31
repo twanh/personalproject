@@ -1,7 +1,6 @@
 import decimal
-
 from django.db import models
-
+import json
 from webcrawler.crawlers import G2a, Kinguin, CrawlRequestError, CrawlDataError
 
 # from sellers.models import Sellers 
@@ -61,7 +60,12 @@ class GameManager(models.Manager):
                 g2a_url = urls['g2a']
                 g2a_price = gta_results['price']
                 for img in gta_results['slider_img']:
+                    # images.append('"{}"'.format(img))
                     images.append(img)
+                    print(type(img))
+                    
+                    print(img)
+                    print (images)
                 
             except CrawlRequestError:
                 pass
@@ -85,7 +89,7 @@ class GameManager(models.Manager):
 
             except CrawlRequestError:
                 pass
-        
+                
         # TODO: Implement greenhouse, gamestop
         # TODO: REMOVE 'x_price'
         new_game = Game(name = game_name,
@@ -168,3 +172,9 @@ class Game(models.Model):
 
     def __str__(self):
         return self.name 
+
+    
+    def return_images_dict(self):
+        imgs = self.images
+        img_dict = json.loads(imgs)
+        return img_dict
