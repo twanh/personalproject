@@ -1,14 +1,8 @@
 .DS_STORE
 db.sqlite3
 .vscode
-<<<<<<< HEAD
-*/__pycache__/*
-webcrawler/__pycache__/crawler.cpython-36.pyc
-pp/__pycache__/urls.cpython-36.pyc
-=======
 __pycache__
 swebcrawler/__pycache__/crawler.cpython-36.pyc
 *.pyc
 *.pyo
 CACHE
->>>>>>> 13d94ee0462895c29936c58769d8d62730927904
