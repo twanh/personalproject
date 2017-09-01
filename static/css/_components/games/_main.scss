@@ -1,0 +1,8 @@
+@import '_full-size-header.scss';
+
+.game-detail-prices{
+    margin: 0;
+    padding: 0;
+    @include font--mono(300);
+    font-size: 15px;
+}

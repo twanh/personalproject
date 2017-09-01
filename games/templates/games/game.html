@@ -6,10 +6,6 @@
 {% endblock extra_css %}
 
 {% block all_content %}
-    {% comment %} Full header {% endcomment %}
-    {% comment %} <div class="game-header" style="background-image: url({{ game.image_url }})">
-        <h1>{{game.name}}</h1>
-    </div> {% endcomment %}
 
     <div class="game-header">
         <div class="background-image" style="background-image: url({{ game.image_url }})"></div>
@@ -32,19 +28,40 @@
                     <div class="row" style="margin-top:10px;">
                         <div class="col-md-3">
                             <h5 class="game-desc-header">Original Price:</h5>
-                            -
+                            {% if game.original_price %}
+                                {% if game.original_price > 0 %}
+                                <span class='game-detail-prices'>{{game.original_price}}</span>
+                                {% else %}
+                                    -
+                                {% endif %}
+                                
+                            {% else %}
+                                -
+                            {% endif %}
                         </div>
                         <div class="col-md-3">
                             <h5 class="game-desc-header">Best Price:</h5>
-                            -
+                            {% if game.get_best_price %}
+                                <span class='game-detail-prices' >&euro;{{game.get_best_price}}</span>
+                            {% else %}
+                                -
+                            {% endif %}
                         </div>
                         <div class="col-md-3">
                             <h5 class="game-desc-header">User Rating:</h5>
-                            -
+                            {% if game.rating %}
+                                {{game.rating}}
+                            {% else %}
+                                -
+                            {% endif %}
                         </div>
                         <div class="col-md-3">
                             <h5 class="game-desc-header">Community Pages</h5>
-                            -
+                            {% if game.community_pages %}
+                                {{game.community_pages}}
+                            {% else %}
+                                -
+                            {% endif %}
                         </div>
                     </div>
                 </div>
