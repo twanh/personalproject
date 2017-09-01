@@ -175,3 +175,7 @@ class Game(models.Model):
         imgs = self.images
         img_dict = json.loads(imgs)
         return img_dict
+
+    def get_best_price(self):
+        prices = [self.g2a_price, self.kinguin_price, self.greenman_price, self.gamestop_price]
+        return min(prices)
