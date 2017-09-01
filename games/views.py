@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 from django.views import generic
 
 from games.models import Game, GameManager
-from webcrawler.crawlers import CrawlUrlError, CrawlNoResultsError
+from webcrawler.crawlers import CrawlUrlError
 
 
 class GameView(generic.DetailView):
