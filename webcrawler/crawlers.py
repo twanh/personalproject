@@ -250,6 +250,11 @@ class Kinguin:
             CrawlRequestError: When the request failed
         ''' 
 
+        try:
+            URL_VALIDATOR(url)
+        except ValidationError:
+            raise CrawlUrlError('No valid url')
+
         result = {}
         
         r = requests.get(url)
@@ -354,3 +359,60 @@ class Kinguin:
             results.append(current_game)
 
         return results
+
+
+class GreenmanGaming:
+
+    def __init__(self, search_url):
+        ''' 
+        Retrieve basic variables and store them in self
+        Args:
+            search_url (str): The url to the search page of greenman gaming
+        '''
+        self.SEARCH_BASE_URL = search_url
+
+    
+    def game(self, url):
+        '''
+        Crawl the game's page (url) and extract relevant information to display on the site
+        Args:
+            url: (str) The url of the game
+        Returns:
+            (dict) The relevant information
+                'name':       game_name,
+                'price':      game_selected_price
+                'rating':      rating of greenman gaming
+        Raises:
+            CrawlRequestError: When the request went wrong
+            CrawlDataError: When there is a problem with the data
+        '''
+
+        try:
+            URL_VALIDATOR(url)
+        except:
+            raise CrawlUrlError('URL: {} is not valid'.format(url))
+
+        result = {}
+
+        r = requests.get(url)
+
+        if r.status_code == requests.codes.ok:
+            html = r.text
+        else:
+            raise CrawlRequestError('Request failed, with codoe {}'.format(r.status_code))
+
+        game_name = None
+        game_price = None
+        game_rating = None
+
+        game_script = None
+
+        soup = bs(html, 'lxml')
+        
+
+        scripts = soup.find_all('script')
+        for script in scripts:
+            if 'var game' in script.text:
+                game_script = script
+        
+        return result
