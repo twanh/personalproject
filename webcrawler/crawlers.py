@@ -419,6 +419,7 @@ class GreenmanGaming:
 
 
 class Gamestop:
+    ''' Webcrawker for gamestop '''
 
     def __init__(self, search_url):
 
