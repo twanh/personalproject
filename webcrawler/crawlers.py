@@ -514,12 +514,12 @@ class Gamestop:
 
         soup = bs(html, 'lxml')
 
-        results = soup.find_all(class_='product')
+        search_results = soup.find_all(class_='product')
         
-        for result in results:
+        for result in search_results:
             result_name = result.find('h3').find('a').text.strip()
             result_price = result.find(class_='purchase_info').text.strip()
-            result_url = result.find('h3').find('a')['src']
+            result_url = result.find('h3').find('a')['href']
             results.append(
                 {
                     'name': result_name,
@@ -528,6 +528,6 @@ class Gamestop:
                 }
             )
         
-        return result
+        return results
 
 
