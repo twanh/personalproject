@@ -439,7 +439,6 @@ class Gamestop:
                 'name': game_name,
                 'price': game_price,
                 'desc': game_desc,
-                'rating': game_rating
         Raises:
             CrawlUrlError: When the url was not valid
             CrawlRequestError: When the request went wrong
@@ -456,8 +455,7 @@ class Gamestop:
         game_online_price = None
         game_price = None
         game_desc = None
-        game_rating = None
-
+        
         r = requests.get(url)
 
         if r.status_code == requests.codes.ok:
@@ -475,16 +473,14 @@ class Gamestop:
         game_online_price = prices[1]
 
         game_desc = soup.find(class_='longdescription').text.strip()
-        game_rating = soup.find(class_='bv-secondary-rating-summary-rating').text.strip()
 
-        game_price = min([game_disc_price, game_online_price])
+        game_price = min([game_disc_price.text, game_online_price.text])
 
         result = {
             'name': game_name,
             'price': game_price,
             'desc': game_desc,
-            'rating': game_rating
-        }
+            }
 
         return result
 
