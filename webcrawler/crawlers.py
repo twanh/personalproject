@@ -14,6 +14,8 @@ G2A_DEFAULT_SEARCH_URL = 'https://g2a.com/lucene/search/filter?jsoncallback=&ski
 
 KINGUIN_DEFAULT_SEARCH_URL = 'https://www.kinguin.net/catalogsearch/result/index/?p=1&q={}&order=bestseller&dir=desc&max_price=143&dir_metacritic=desc&hide_outstock=1'
 
+GAMESTOP_DEFAULT_SEARCH_URL = 'http://www.gamestop.com/browse/pc?nav=16k-3-{},28-wa2,138c'
+
 class CrawlRequestError(Exception):
     ''' 
     Raise when something goes wrong while crawling a page
@@ -488,4 +490,44 @@ class Gamestop:
 
 
     def search(self, query):
-        pass
+        '''
+        Acces the search page of gamestop and search the given query.
+        Args:
+            query (str): The query to search
+        Returns:
+            results (list): The results found
+        Raises:
+            -
+        '''
+
+        results = []
+        
+        query = query.replace(' ', '+')
+        url = self.SEARCH_URL.format(query)
+
+        r = requests.get(url)
+
+        if r.status_code == requests.codes.ok:
+            html = r.text
+        else:
+            raise CrawlRequestError('Request failed with code {}'.format(r.status_code))
+
+        soup = bs(html, 'lxml')
+
+        results = soup.find_all(class_='product')
+        
+        for result in results:
+            result_name = result.find('h3').find('a').text.strip()
+            result_price = result.find(class_='purchase_info').text.strip()
+            result_url = result.find('h3').find('a')['src']
+            results.append(
+                {
+                    'name': result_name,
+                    'price': result_price,
+                    'url': result_url
+                }
+            )
+        
+        return result
+
+
