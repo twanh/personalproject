@@ -422,7 +422,11 @@ class Gamestop:
     ''' Webcrawker for gamestop '''
 
     def __init__(self, search_url):
-
+        '''
+        Retrieve and store some basic variables
+        Args:
+            search_url (str): The url that turns to the search page
+        '''
         self.SEARCH_URL = search_url
 
     def game(self, url):
