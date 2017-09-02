@@ -421,11 +421,55 @@ class GreenmanGaming:
 class Gamestop:
 
     def __init__(self, search_url):
-        pass
 
-    
+        self.SEARCH_URL = search_url
+
     def game(self, url):
-        pass
+
+        try:
+            URL_VALIDATOR(url)
+        except ValidationError:
+            raise CrawlUrlError('Url {} was not valid'.format(url))
+
+        result = {}
+
+        game_name = None
+        game_disc_price = None
+        game_online_price = None
+        game_price = None
+        game_desc = None
+        game_rating = None
+
+        r = requests.get(url)
+
+        if r.status_code == requests.codes.ok:
+            html = r.text
+        else:
+            raise CrawlRequestError('Request failed with code {}'.format(r.status_code))
+        
+        soup = bs(html, 'lxml')
+
+        game_name = soup.find(class_='ats-prod-title').text.strip()
+
+        prices = soup.find_all(class_='ats-prodBuy-price')
+
+        game_disc_price = prices[0]
+        game_online_price = prices[1]
+
+        game_desc = soup.find(class_='longdescription').text.strip()
+        game_rating = soup.find(class_='bv-secondary-rating-summary-rating').text.strip()
+
+        game_price = min([game_disc_price, game_online_price])
+
+        result = {
+            'name': game_name,
+            'price': game_price,
+            'desc': game_desc,
+            'rating': game_rating
+        }
+
+        return result
+
 
     def search(self, query):
         pass
