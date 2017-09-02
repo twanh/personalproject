@@ -416,3 +416,16 @@ class GreenmanGaming:
                 game_script = script
         
         return result
+
+
+class Gamestop:
+
+    def __init__(self, search_url):
+        pass
+
+    
+    def game(self, url):
+        pass
+
+    def search(self, query):
+        pass
