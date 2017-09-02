@@ -425,7 +425,20 @@ class Gamestop:
         self.SEARCH_URL = search_url
 
     def game(self, url):
-
+        '''
+        Crawl the game page (url) and extract relevant inforamtion to display on the games page
+        Args:
+            url (str): The url of the game
+        Returns:
+            (dict) The relevant inforamtion extracted
+                'name': game_name,
+                'price': game_price,
+                'desc': game_desc,
+                'rating': game_rating
+        Raises:
+            CrawlUrlError: When the url was not valid
+            CrawlRequestError: When the request went wrong
+        '''
         try:
             URL_VALIDATOR(url)
         except ValidationError:
@@ -469,6 +482,8 @@ class Gamestop:
         }
 
         return result
+
+
 
 
     def search(self, query):
