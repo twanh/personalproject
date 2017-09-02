@@ -59,3 +59,9 @@ def gamestop_game():
     gamestop = Gamestop(search_url)
     game = gamestop.game(url)
     print(game)
+
+def gamestop_search():
+    search_url = 'http://www.gamestop.com/browse/pc?nav=16k-3-{},28-wa2,138c'
+    gamestop = Gamestop(search_url)
+    results = gamestop.search('grand theft auto v')
+    print(results)
