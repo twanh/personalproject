@@ -1,10 +1,10 @@
-import crawlers
+from webcrawler.crawlers import *
 import json
 
 # Testing
 def test_g2a_search():
     ''' Test the search crawling of the G2a webcrawler '''
-    g3a = crawlers.G2a()
+    g3a = G2a()
     s = g3a.search('gta')
     print('-'*10, end='\n')
     print('Type: {}'.format(type(s)))
@@ -21,7 +21,7 @@ def test_g2a_search():
 def test_g2a_game():
     ''' Test the game crawling of the G2a webcrawler '''
     url = 'https://www.g2a.com/grand-theft-auto-v-rockstar-key-global-i10000000788017'
-    g2a = crawlers.G2a()
+    g2a = G2a()
     game_info = g2a.game(url)
     print('-'*10)
     print('Type: {}'.format(type(game_info)))
@@ -41,7 +41,7 @@ def kinguin_search():
     ''' Test the search crawling of the kinguin webcrawler '''
     url = 'https://www.kinguin.net/catalogsearch/result/index/?p=1&q={}&order=bestseller&dir=desc&max_price=143&dir_metacritic=desc&hide_outstock=1'
     query = 'grand theft auto'
-    king = crawlers.Kinguin(url)
+    king = Kinguin(url)
     search = king.search(query)
     s =  json.dumps(search)
     print(s)
@@ -49,8 +49,13 @@ def kinguin_search():
 def kinguin_game():
     search_url = 'https://www.kinguin.net/catalogsearch/result/index/?p=1&q={}&order=bestseller&dir=desc&max_price=143&dir_metacritic=desc&hide_outstock=1'
     url = 'https://www.kinguin.net/category/15836/grand-theft-auto-v-rockstar-digital-download-key/'
-    king = crawlers.Kinguin(search_url)
+    king = Kinguin(search_url)
     game = king.game(url)
     print(game)
 
-kinguin_game()
+def gamestop_game():
+    search_url = ''
+    url = 'http://www.gamestop.com/pc/games/grand-theft-auto-v/115461'
+    gamestop = Gamestop(search_url)
+    game = gamestop.game(url)
+    print(game)
