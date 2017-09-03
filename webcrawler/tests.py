@@ -65,3 +65,15 @@ def gamestop_search():
     gamestop = Gamestop(search_url)
     results = gamestop.search('grand theft auto v')
     print(results)
+
+def gameranking_rating():
+    search_url = 'http://www.gamerankings.com/browse.html?search={}&numrev=3&site=pc'
+    ganeranking = GameRanking(search_url)
+    rating = ganeranking.rating('http://www.gamerankings.com/pc/805606-grand-theft-auto-v/index.html')
+    print(rating)
+
+def gameranking_search():
+    search_url = 'http://www.gamerankings.com/browse.html?search={}&numrev=3&site=pc'
+    ganeranking = GameRanking(search_url)
+    rating = ganeranking.search_rating('grand theft auto v')
+    print(rating)
