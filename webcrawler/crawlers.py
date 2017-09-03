@@ -18,6 +18,8 @@ GAMESTOP_DEFAULT_SEARCH_URL = 'http://www.gamestop.com/browse/pc?nav=16k-3-{},28
 
 GAMERANKING_DEFAULT_SEARCH_URL = 'http://www.gamerankings.com/browse.html?search={}&numrev=3&site=pc'
 
+REDDIT_SEARCH_URL = 'https://www.reddit.com/search?q={}'
+
 
 class CrawlRequestError(Exception):
     ''' 
@@ -609,3 +611,32 @@ class GameRanking:
         except Exception as e:
             raise CrawlDataError('No search results found for {} on {} therefore error: {}'.format(query, url, e))
         return [first_result_url, first_result_rating]
+
+
+class Reddit:
+    def __init__(self, search_url):
+        self.SEARCH_URL = search_url
+
+    def get_community(self, query):
+
+        query = query.replace(' ', '+')
+        url = self.SEARCH_URL.format(query)
+
+        try:
+            URL_VALIDATOR(url)  
+        except ValidationError:
+            raise CrawlUrlError('Url {} is not valid'.format(url))
+
+        r = requests.get(url)
+
+        if r.status_code == requests.codes.ok:
+            html = r.text
+        else:
+            raise CrawlRequestError('Request failed with code {}'.format(r.status_code))
+
+        
+        soup = bs(html, 'lxml')
+
+        community_url = soup.find_all(class_='search-result-header')[0].find('a')['href']
+
+        return community_url
