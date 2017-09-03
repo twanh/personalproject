@@ -16,6 +16,9 @@ KINGUIN_DEFAULT_SEARCH_URL = 'https://www.kinguin.net/catalogsearch/result/index
 
 GAMESTOP_DEFAULT_SEARCH_URL = 'http://www.gamestop.com/browse/pc?nav=16k-3-{},28-wa2,138c'
 
+GAMERANKING_DEFAULT_SEARCH_URL = 'http://www.gamerankings.com/browse.html?search={}&numrev=3&site=pc'
+
+
 class CrawlRequestError(Exception):
     ''' 
     Raise when something goes wrong while crawling a page
@@ -531,3 +534,78 @@ class Gamestop:
         return results
 
 
+class GameRanking:
+    ''' Crawler for gameranking.com '''
+
+    def __init__(self, search_url):
+        self.SEARCH_URl = search_url
+
+    def rating(self, game_url):
+        '''
+        Get the rating for a game
+        Args:
+            game_url (str): The url to the game to get the rating of
+        Returns:
+            rating (str): The rating percentage
+
+        '''
+
+        try:
+            URL_VALIDATOR(game_url)
+        except ValidationError:
+            raise CrawlUrlError('Url {} is not a valid url'.format(game_url))
+        
+        r = requests.get(game_url)
+
+        if r.status_code == requests.codes.ok:
+            html = r.text
+        else:
+            raise CrawlRequestError('Request failed with code {}'.format(r.status_code))
+        
+        soup = bs(html, 'lxml')
+
+        rating = None
+
+        rating = soup.find(id='main_col').find_all('table')[0].find('span').text.strip()[:-1]
+
+        return rating
+    
+    def search_rating(self, query):
+        '''
+        Search gameranking's pc games for the query and return its page and rating
+        Args:
+            query (str): The query to search for
+        Returns:
+            result (dict): A dictionary containing the result
+                [0]: the url to the page
+                [1]: The rating
+        Raises:
+            CrawlURLError: When the url is not valid
+            CrawlRequestError: When the request failed            
+            CrawlDataError: When there is no search result for query
+        '''
+
+        query = query.replace(' ', '+')
+
+        url = self.SEARCH_URl.format(query)
+
+        try:
+            URL_VALIDATOR(url)
+        except ValidationError:
+            raise CrawlUrlError('The url {} is not valid'.format(url))
+        
+        r = requests.get(url)
+
+        if r.status_code == requests.codes.ok:
+            html = r.text
+        else:
+            raise CrawlRequestError('Request failed with code {}'.format(r.status_code))
+
+        soup = bs(html, 'lxml')
+
+        try:
+            first_result_url = soup.find('table').find_all('a')[0]['href']
+            first_result_rating = soup.find('table').find_all('span')[0].text.strip()[:-1]
+        except Exception as e:
+            raise CrawlDataError('No search results found for {} on {} therefore error: {}'.format(query, url, e))
+        return [first_result_url, first_result_rating]
