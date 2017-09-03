@@ -77,3 +77,9 @@ def gameranking_search():
     ganeranking = GameRanking(search_url)
     rating = ganeranking.search_rating('grand theft auto v')
     print(rating)
+
+def reddit_community():
+    REDDIT_SEARCH_URL = 'https://www.reddit.com/search?q={}'
+    reddit = Reddit(REDDIT_SEARCH_URL)
+    com_url = reddit.get_community('grand theft auto v')
+    print(com_url)
