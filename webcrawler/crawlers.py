@@ -1,3 +1,28 @@
+'''
+All the crawlers for crawling the sites we need for our site
+G2a - Crawl g2a.com
+    - Games: Crawls the game page
+    - Search: Crawl the search page
+
+Kinguin - Crawl kinguin.net
+    - Games: Crawls the game page
+    - Search: Crawls the search page
+
+Gamestop - Crawl gamestop.com
+    - Games: Crawl the game page
+    - Search: Crawl the search page
+
+Gameranking - Crawl gameranking.com for rankings for games
+    - game_ranking: Crawl the ranking page for a game
+    - search_raking: Crawls the search page
+        - Returns the fist search result
+
+Reddit - Crawl reddit to gain community urls
+    - community_url: Crawl reddit search to find subreddits
+        - Returns the subreddits url as community url
+
+'''
+
 import json
 from json.decoder import JSONDecodeError
 
