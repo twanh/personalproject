@@ -621,13 +621,88 @@ class Kinguin:
                         
                         
 class Gamestop:
-    ''''''
+    ''' Webcrawler for gamestop.com '''
 
     @staticmethod
     def game(self, url):
-        ''''''
-        pass
+        '''
+        Crawl the game page (url) and extract relevant inforamtion to display on the games page
+        Args:
+            url (str): The url of the game
+        Returns:
+            (dict) The relevant inforamtion extracted
+                'name': game_name,
+                'price': game_price,
+                'desc': game_desc,
+        Raises:
+            CrawlUrlError: When the url was not valid
+            CrawlRequestError: When the request went wrong
+        '''
+        
+        # Validate the url
+        # If the url is invalid raise CrawlUrlError
+        validate_url(url)
 
+        # Create the return dictionary
+        result = {}
+
+        # Declare all the retur variables
+        # So they will always exist,
+        # even if they are not found while crawlign the page
+        name = None
+        disc_price = None
+        online_price = None
+        price = None
+        desc = None
+
+        # Create bs4 soup obj from html returend by requests
+        # If request failes CrawRequestError is raised
+        soup = BS(get_html(url))
+
+        # Get the name of the game
+        # - Find class ats-prod-title
+        # - Check if it exists
+        #   - Extract the text from it
+        name = soup.find(class_='ats-prod-title')
+        if name:
+            name = name.get_text(strip=True)
+        else:
+            name = None
+            print('[CRAWLER > Gamestop > game > name]: could not find class ats-prod-title')
+
+        # Get the prices for the game
+        # - Find the class ats-prodBuy-price
+        # - Check if it exists
+        #   - 0 - the discprice
+        #   - 1 - the online price
+        prices = soup.find_all(class_='ats-prodBuy-price')
+        if len(prices) >= 2:
+            disc_price = prices[0]
+            online_price = prices[1]
+            price = min([disc_price, online_price])
+        else:
+            price = None
+            print('[CRAWLER > Gamestop > game > price]: could not find class ats-prod-Buy-price, or it did not have enough values')
+
+        # Get the desc for the game
+        # - Find class longdescription
+        # - Check if it exists
+        #   - Extract the text from it
+        desc = soup.find(class_='longdescription')
+        if desc:
+            desc = desc.get_text(strip=True)
+        else:
+            desc = None
+            print('[CRAWLER > Gamestop > game > desc]: could not find class longdescription')
+        
+        result = {
+            'name': name,
+            'price': price,
+            'desc': desc
+        }
+
+        return result
+    
     @staticmethod
     def search(self, query, url=GAMESTOP_DEFAULT_SEARCH_URL):
         ''''''
