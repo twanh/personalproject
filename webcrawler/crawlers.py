@@ -702,11 +702,90 @@ class Gamestop:
         }
 
         return result
-    
+
     @staticmethod
     def search(self, query, url=GAMESTOP_DEFAULT_SEARCH_URL):
-        ''''''
-        pass
+        '''
+        Acces the search page of gamestop and search the given query.
+        Args:
+            query (str): The query to search
+            url (str): The url to the search page
+        Returns:
+            results (list): The results found
+        Raises:
+            CrawlUrlError: When the url is invalid
+            CrawlRequestError: When the request failed
+        '''
+
+        # Create empty return obj
+        # This way we always have something to return
+        search_results = []
+
+        # Format query to fit the url
+        # Replace spaces with +
+        query = query.replace(' ', '+')
+
+        # Format url with the query
+        url = url.format(query)
+        
+        # Validate url
+        # If the validation fails
+        # we raise CrawlUrlError
+        validate_url(url)
+
+        # Create a bs4 soup obj from the requests html
+        # If the request failes we raise a CrawlRequestError
+        soup = BS(get_html(url),'lxml')
+
+        # Find all products
+        # - Find all class product
+        # - Check if the products list exists
+        results = soup.find_all(class_='product')
+        if results >= 1:
+
+            # Loop trough the results
+            # And extract all the data 
+            for result in results:
+                name = result.find('h3')
+                if name:
+                    name = name.find('a')
+                    if name:
+                        name = name.get_text(strip=True)
+                    else:
+                        name = None
+                        print('[CRAWLER > Gamestop > search > name]: could not find a in h3')
+                else:
+                    name = None
+                    print('[CRAWLER > Gamestop > search > name]: could not find h3')
+        
+                price = result.find(class_='purchase_info')
+                if price:
+                    price = price.get_text(strip=True)
+                else:
+                    price = None
+                    print('[CRAWLER > Gamestop > search > price]: could not find class purchase info')
+                
+                url = result.find('h3')
+                if url:
+                    url = url.find('a')
+                    if 'href' in url:
+                        url = url['href']
+                    else:
+                        url = None
+                        print('[CRAWLER > Gamestop > search > url]: url has not attribute href')
+                else:
+                    url = None
+                    print('[CRAWLER > Gamestop > search > url]: could not find h3')
+            
+                search_results.append(
+                    {
+                        'name': name,
+                        'price': price,
+                        'url': url
+                    }
+                )
+
+        return search_results
 
 
 class Gameraking:
