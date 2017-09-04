@@ -18,6 +18,8 @@ class GameManager(models.Manager):
                 'kinguin': url
                 'greenman': url
                 'gamestop': url
+                'gameranking': url
+                
 
         Return:
             Model
@@ -36,6 +38,8 @@ class GameManager(models.Manager):
         kinguin_url      = None
         greenman_url     = None
         gamestop_url     = None
+        rating           = None
+        reddit           = None   
         images           = []
 
         if 'g2a' in urls:
@@ -75,6 +79,14 @@ class GameManager(models.Manager):
             gamestop_price = gamestop_game['price']
             gamestop_url = urls['gamestop']        
 
+
+        if 'gameranking' in urls:
+            rating = int(crawlers.Gameraking.game_rating(urls['gameranking']))
+        else:
+            rating = int(crawlers.Gameraking.search_rating(game_name)[1])
+
+        reddit = crawlers.Reddit.get_community_url(game_name)
+
         images = json.dumps(images)
 
         new_game = Game(name = game_name,
@@ -89,7 +101,9 @@ class GameManager(models.Manager):
                        greenman_url = greenman_url,
                        gamestop_price = 'gamestop_price',
                        gamestop_url = gamestop_url,
-                       images = images
+                       images = images,
+                       rating = rating,
+                       community_reddit = reddit
                        )
         new_game.save()
 
@@ -157,6 +171,10 @@ class Game(models.Model):
     # Rating for the game
     rating = models.IntegerField(blank=True, null=True)
 
+    # Reddit community url
+    community_reddit = models.URLField(verbose_name='Reddit community urls',
+                                    blank=True,
+                                    null=True) 
     def __str__(self):
         return self.name 
 
