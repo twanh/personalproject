@@ -1,7 +1,7 @@
 import decimal
 from django.db import models
 import json
-from webcrawler.crawlers import G2a, Kinguin, CrawlRequestError, CrawlDataError
+from webcrawler import crawlers
 
 # from sellers.models import Sellers 
 
@@ -22,13 +22,6 @@ class GameManager(models.Manager):
         Return:
             Model
         '''
-        # TODO: Once selles are made
-        # G2a_crawler = G2a(Seller.search_url)
-        # For now
-        G2A_DEFAULT_SEARCH_URL = 'https://g2a.com/lucene/search/filter?jsoncallback=&skip=&minPrice=0.00&maxPrice=1422.00&cc=NL&stock=all&event=&search={}&genre=0&cat=0&sortOrder=popularity+desc&start=0&rows=12&steam_app_id=&steam_category=&steam_prod_type=&includeOutOfStock=false&includeFreeGames=false&isWholesale=false&_=1503469082372'
-        g2a_crawler = G2a(G2A_DEFAULT_SEARCH_URL)
-        KINGUIN_DEFAULT_SEARCH_URL = 'https://www.kinguin.net/catalogsearch/result/index/?p=1&q={}&order=bestseller&dir=desc&max_price=143&dir_metacritic=desc&hide_outstock=1'
-        kinguin_crawler = Kinguin(KINGUIN_DEFAULT_SEARCH_URL)
 
         # VARIABLES THAT WILL BE INPUTTED TO THE MODEL OBJ
         game_name        = name
@@ -46,49 +39,44 @@ class GameManager(models.Manager):
         images           = []
 
         if 'g2a' in urls:
-            try:
-                gta_results = g2a_crawler.game(urls['g2a'])
-                
-                # Check if the game name existst
-                if not game_name:
-                    game_name = gta_results['name']
-                if not game_desc:
-                    game_desc = gta_results['desc']
-                if not img_url:
-                    img_url = gta_results['img']
-                
-                g2a_url = urls['g2a']
-                g2a_price = gta_results['price']
-                for img in gta_results['slider_img']:
-                    # images.append('"{}"'.format(img))
-                    images.append(img)
-            except CrawlRequestError:
-                pass
-            except CrawlDataError:
-                pass
-    
+            g2a_game = crawlers.G2a.game(urls['g2a'])
+            if not game_name:
+                game_name = g2a_game['name']
+            if not game_desc:
+                game_desc = g2a_game['desc']
+            if not img_url:
+                img_url = g2a_game['img']
+            
+            g2a_price = g2a_game['price']
+            g2a_url = urls['g2a']
+
+            for img in g2a_game['slider_img']:
+                images.append(img)
+
         if 'kinguin' in urls:
-            try:
-                kinguin_results = kinguin_crawler.game(urls['kinguin'])
+            kinguin_game = crawlers.Kinguin.game(urls['kinguin'])
+            if not game_name:
+                game_name = kinguin_game['name']
+            if not game_desc:
+                game_desc = kinguin_game['desc']
+            if not img_url:
+                img_url = kinguin_game['img_url']
+            
+            kinguin_price = kinguin_game['price']
+            kinguin_url = urls['kinguin']
 
-                # Check if the game name exists
-                if not game_name:
-                    game_name = kinguin_results['name']
-                if not game_desc:
-                    game_desc = kinguin_results['desc']
-                if not img_url:
-                    img_url = kinguin_results['img_url']
-                
-                kinguin_url = urls['kinguin']
-                kinguin_price = kinguin_results['price']
+        if 'gamestop' in urls:
+            gamestop_game = crawlers.Gamestop.game(urls['gamestop'])
+            if not game_name:
+                game_name = gamestop_game['name']
+            if not game_desc:
+                game_desc = game_desc['desc']
+            
+            gamestop_price = gamestop_game['price']
+            gamestop_url = urls['gamestop']        
 
-            except CrawlRequestError:
-                pass
-        
         images = json.dumps(images)
 
-        # TODO: Implement greenhouse, gamestop
-        # TODO: REMOVE 'x_price'
         new_game = Game(name = game_name,
                        desc = game_desc,
                        image_url = img_url,
@@ -165,7 +153,9 @@ class Game(models.Model):
                 
     # Image ulrs to images for the game
     images = models.TextField(blank=True, default='[]')
-
+    
+    # Rating for the game
+    rating = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return self.name 
