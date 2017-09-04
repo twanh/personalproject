@@ -150,11 +150,11 @@ class G2a:
             if game_name:
                 game_name = game_name.get_text(strip=True)
             else:
-                print('[CRAWLER > G2a > name]: h1 was not found in game_name[0]')                
+                print('[CRAWLER > G2a > game > name]: h1 was not found in game_name[0]')                
                 game_name = None
                 
         else:
-            print('[CRAWLER > G2a > name]: class: nameContent was not found in html')
+            print('[CRAWLER > G2a > game > name]: class: nameContent was not found in html')
             game_name = None
 
         # Get the price of the game
@@ -166,7 +166,7 @@ class G2a:
         if price:
             price = price.get_text(strip=True).replace('\u20AC', '')  
         else:
-            print('[CRAWLER > G2a > price]: class: selected-price was not found in html')
+            print('[CRAWLER > G2a > game > price]: class: selected-price was not found in html')
             price = None
             
     
@@ -184,10 +184,10 @@ class G2a:
                 raw_desc = desc.get_text()
                 desc = raw_desc.strip()
             else:
-                print('[CRAWLER > G2a > desc]: p was not found in desc[0]')
+                print('[CRAWLER > G2a > game > desc]: p was not found in desc[0]')
                 desc = None
         else:
-            print('[CRAWLER > G2a > desc]: class: prodDetalisText was not found in desc[0]')
+            print('[CRAWLER > G2a > game > desc]: class: prodDetalisText was not found in desc[0]')
 
         
         # Get the game's main image
@@ -204,13 +204,13 @@ class G2a:
                 if 'src' in img:
                     img = img['src']
                 else:
-                    print('[CRAWLER > G2a > img]: src was not found in img')
+                    print('[CRAWLER > G2a > game > img]: src was not found in img')
                     img = None
             else:
-                print('[CRAWLER > G2a > img]: tag img was not found in img[0]')
+                print('[CRAWLER > G2a > game > img]: tag img was not found in img[0]')
                 img = None
         else:
-            print('[CRAWLER > G2a > img]: class: games-image was not found in html')            
+            print('[CRAWLER > G2a > game > img]: class: games-image was not found in html')            
             img = None
         
         # Get slider images
@@ -233,11 +233,11 @@ class G2a:
                     if 'src' in li_img:
                         img_slider.append(li_img['src'])
                     else:
-                        print('[CRAWLER > G2a > img_slider]: li_img has no attribute src')
+                        print('[CRAWLER > G2a > game > img_slider]: li_img has no attribute src')
             else:
-                print('[CRAWLER > G2a > img_slider]: tag li was not found in slider[0]')
+                print('[CRAWLER > G2a > game > img_slider]: tag li was not found in slider[0]')
         else:   
-            print('[CRAWLER > G2a > img_slider]: class: cw-img-list was not found in html')
+            print('[CRAWLER > G2a > game > img_slider]: class: cw-img-list was not found in html')
             img_slider = None 
 
         result = {
@@ -254,12 +254,106 @@ class G2a:
 
     @staticmethod
     def search(self, query, url=G2A_DEFAULT_SEARCH_URL):
-        ''''''
-        pass
+        '''
+        Search g2a for query and return the results
+        Args:
+            query (str): The query to search for
+            url (str) (default: The standart search url): The url to the search page (/api)
+        Return:
+            (list) search_results: Contains dicts containing search results information
+        Raises:
+            CrawlUrlError: When the url is invalid
+            CrawlRequestError: When the request failed
+            CrawlDataError: When there was no data returd
+        '''
 
+        # Define search_results to never fail return
+        search_results = []
+        
+        # Validate the url
+        # If invalid raise CrawlUrlError
+        validate_url(url)
+
+        # Handle the request 
+        # We are not using the get_html function
+        # because we use g2a's internal api, which returns json
+        # and it requires some special formatting to be valid json
+        r = requests.get(url)
+
+        if r.status_code == requests.codes.ok:
+            data = r.text[1:-1]
+        else:
+            raise CrawlRequestError('Request to url: {}, failed with code {}'.format(url, r.status_code))
+
+        # Validate the data
+        # - Check if it exists
+        #   - Check if it is a str
+        #       - Convert it to json obj
+        if data is not None:
+            if isinstance(data, str):
+                try:
+                    json_data = json.loads(data)
+                except JSONDecodeError as exep:
+                    raise CrawlDataError('Failed to decode to json with JSONDecodeError: {}'.format(exep))
+                
+            else:
+                raise CrawlDataError('Data returned by request is not a valid str')
+        else:
+            raise CrawlDataError('Data returned by request does not exist')
+        
+
+        # Extract the results from the json_data
+        # - Check if docs exists in the dat
+        #   - Loop trough the results[docs]
+        #       - For result check if name exists
+        #       - Check if price exists
+        #       - Check if slug exists
+        #       - Check if smallImage exists
+        if 'docs' in json_data:
+            results = json_data['docs']
+            for result in results:
+                if 'name' in result:
+                    name = result['name']
+                else:
+                    name = None
+                    print('[CRAWLER > G2a > search > name]: name could not be found for current result')
+                
+                if 'minPrice' in result:
+                    price = result['minPrice']
+                else:
+                    price = None
+                    print('[CRAWLER > G2a > search > price]: price could not be found for current result')
+                
+                if 'slug' in result:
+                    slug = result['slug']
+                    url = 'https://g2a.com{}'.format(slug)
+                else:
+                    slug = None
+                    url = None
+                    print('[CRAWLER > G2a > search > slug]: slug could not be found for current result')
+
+                if 'smallImage' in result:
+                    small_img = result['smallImage']
+                else:
+                    small_img = None
+                    print('[CRAWLER > G2a > search > smallImage]: smallImage could not be found for current result')
+                
+                current_result = {
+                    'name'      : name,
+                    'price'     : price,
+                    'url'       : url,
+                    'small_img' : small_img
+                }
+
+                search_results.append(current_result)
+
+        else:
+            print('[CRAWLER > G2a > search > json_data]: docs could not be found in json_data')
+
+        return search_results
 
 class Kinguin:
-    '''''''
+    ''' ''''
 
     @staticmethod
     def game(self, url):
