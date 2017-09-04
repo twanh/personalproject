@@ -122,7 +122,7 @@ class G2a:
     ''' Webcrawler for G2a.com '''
 
     @staticmethod
-    def game(self, url):
+    def game(url):
         '''
         Crawl the game's page
         and extract all the relevant information from the page.
@@ -278,7 +278,7 @@ class G2a:
 
 
     @staticmethod
-    def search(self, query, url=G2A_DEFAULT_SEARCH_URL):
+    def search(query, url=G2A_DEFAULT_SEARCH_URL):
         '''
         Search g2a for query and return the results
         Args:
@@ -387,7 +387,7 @@ class Kinguin:
     ''' Webcrawler for kinguin.net '''
 
     @staticmethod
-    def game(self, url):
+    def game(url):
         '''
         Crawl kinguin.nets game's page
         and extract all relevant information about the game from the page.
@@ -522,7 +522,7 @@ class Kinguin:
         return result
 
     @staticmethod
-    def search(self, query, url=KINGUIN_DEFAULT_SEARCH_URL):
+    def search(query, url=KINGUIN_DEFAULT_SEARCH_URL):
         '''
         Crawl the search page for the given query and return all teh results
         Args:
@@ -649,7 +649,7 @@ class Gamestop:
     ''' Webcrawler for gamestop.com '''
 
     @staticmethod
-    def game(self, url):
+    def game(url):
         '''
         Crawl the game page (url) and extract relevant inforamtion to display on the games page
         Args:
@@ -729,7 +729,7 @@ class Gamestop:
         return result
 
     @staticmethod
-    def search(self, query, url=GAMESTOP_DEFAULT_SEARCH_URL):
+    def search(query, url=GAMESTOP_DEFAULT_SEARCH_URL):
         '''
         Acces the search page of gamestop and search the given query.
         Args:
@@ -817,7 +817,7 @@ class Gameraking:
     ''' Webcrawler for gameranking.com '''
 
     @staticmethod
-    def game_rating(self, url):
+    def game_rating(url):
         '''
         Get the rating for a game
         Args:
@@ -868,7 +868,7 @@ class Gameraking:
         return rating
     
     @staticmethod
-    def search_rating(self, query, url=GAMERANKING_DEFAULT_SEARCH_URL):
+    def search_rating(query, url=GAMERANKING_DEFAULT_SEARCH_URL):
         '''
         Search gameranking's pc games for the query and return its page and rating
         Args:
@@ -943,7 +943,7 @@ class Reddit:
     ''' Webcrawler for reddit '''
 
     @staticmethod
-    def get_community_url(self, query, url=REDDIT_SEARCH_URL):
+    def get_community_url(query, url=REDDIT_SEARCH_URL):
         '''
         Get the url to the community page for the queried game
         Args:
