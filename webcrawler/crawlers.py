@@ -69,18 +69,188 @@ def validate_url(url):
 
     return False
     
+def get_html(url):
+    '''
+    Request url and return the pages html
+    Args:
+        url (str): The url to request
+    Returns:
+        html (str): The content of the url/page
+    Raises:
+        CrawlRequestError: When the request failed 
+    '''
+    r = requests.get(url)
+
+    if r.status_code == requests.codes.ok:
+        return r.text
+    else:
+        raise CrawlRequestError('Request to url: {}, failed with code {}'.format(url, r.status_code))
+
+    return None
+
 
 # Crawler Classes
 # The classes that will actualy crawl the sites.
 
 
 class G2a:
-    ''''''
+    ''' Webcrawler for G2a.com '''
 
     @staticmethod
     def game(self, url):
-        ''''''
-        pass
+        '''
+        Crawl the game's page
+        and extract all the relevant information from the page.
+        Args:
+            url (str): The url to the game's page
+        Returns:
+            (dict) Results - The relevant information:
+                'name'      : 'The games name'
+                'desc'      : 'The games description'
+                'desc_raw'  : 'Raw text from the description'
+                'img'       : 'The main image for the game, url'
+                'slider_img': [The urls for images from the game]
+                'price'     : 'The game's price'
+        Raises:
+            CrawlUrlError: If the url is invalid
+            CrawlRequestError: If the request failed
+        '''
+        
+        # Url validation
+        # We do this to ensure the url is valid
+        # We do not use the return because
+        # if the validation failed we already raised an exception
+        # and a True boolean is not of use.
+        validate_url(url)
+
+        # Declare all the return variables
+        # We do this because we do not want
+        # to return a not declared variable.
+        # This way we will always return something
+        # even if it does not exist - None
+        name        = None
+        price       = None
+        desc        = None
+        raw_desc    = None
+        img         = None
+        slider_img  = None
+
+        # Request the url and create the BeautifullSoup Obj
+        soup = BS(get_html(url))
+
+        # Get the name of the game
+        # - Find class nameContent
+        # - Check if nameContent is bigger than or equal to 1 (it has results in it)
+        #   - Find the h1 in the first ([0]) result
+        #   - Check if it exists (is not None)
+        #       - Get the text (already stripped)
+        game_name = soup.find_all(class_='nameContent')
+        if len(game_name) >= 1:
+            game_name = game_name[0].find('h1')
+            if game_name:
+                game_name = game_name.get_text(strip=True)
+            else:
+                print('[CRAWLER > G2a > name]: h1 was not found in game_name[0]')                
+                game_name = None
+                
+        else:
+            print('[CRAWLER > G2a > name]: class: nameContent was not found in html')
+            game_name = None
+
+        # Get the price of the game
+        # - Find the class selected-price
+        # - Check if it exists
+        #   - Get the rext
+        #       - Remove the euro sign (\u20AC)
+        price = soup.find(class_='selected-price')
+        if price:
+            price = price.get_text(strip=True).replace('\u20AC', '')  
+        else:
+            print('[CRAWLER > G2a > price]: class: selected-price was not found in html')
+            price = None
+            
+    
+        # Get the description of the game
+        # - Find class prodDetailsText
+        # - Check if it is bigger than or equal to 1 (=> it has results)
+        #   - Find the p in the first ([0]) result
+        #   - Check if the p exists
+        #       - Get the text
+        #       - Get the stripped text
+        desc = soup.find_all(class_='prodDetalisText')
+        if len(desc) >= 1:
+            desc = desc[0].find('p')
+            if desc:
+                raw_desc = desc.get_text()
+                desc = raw_desc.strip()
+            else:
+                print('[CRAWLER > G2a > desc]: p was not found in desc[0]')
+                desc = None
+        else:
+            print('[CRAWLER > G2a > desc]: class: prodDetalisText was not found in desc[0]')
+
+        
+        # Get the game's main image
+        # - Find class games-image
+        # - Check if it has results
+        #   - Find img
+        #   - Check if img exists
+        #       - Check if source exists
+        #       - Extract source
+        img = soup.find_all(class_='games-image')
+        if len(img) >= 1:
+            img = img.find('img')
+            if img:
+                if 'src' in img:
+                    img = img['src']
+                else:
+                    print('[CRAWLER > G2a > img]: src was not found in img')
+                    img = None
+            else:
+                print('[CRAWLER > G2a > img]: tag img was not found in img[0]')
+                img = None
+        else:
+            print('[CRAWLER > G2a > img]: class: games-image was not found in html')            
+            img = None
+        
+        # Get slider images
+        # - Find class cw-img-list
+        # - Check if it has results
+        #   - Find all li
+        #   - Check if it exists
+        #   - Loop trough the lis
+        #       - Per li find img
+        #           - Check if img exists
+        #               - Check if img has key src
+        #                   - Extract src
+        slider = soup.find_all(class_='cw-img-list')
+        if len(slider) >= 1:
+            slider = slider[0].find_all('li')
+            if len(slider) >= 1:
+                img_slider = []
+                for li in slider:
+                    li_img = li.find('img')
+                    if 'src' in li_img:
+                        img_slider.append(li_img['src'])
+                    else:
+                        print('[CRAWLER > G2a > img_slider]: li_img has no attribute src')
+            else:
+                print('[CRAWLER > G2a > img_slider]: tag li was not found in slider[0]')
+        else:   
+            print('[CRAWLER > G2a > img_slider]: class: cw-img-list was not found in html')
+            img_slider = None 
+
+        result = {
+            'name'      : name,
+            'desc'      : desc,
+            'raw_desc'  : raw_desc,
+            'img'       : img,
+            'slider_img': img_slider,
+            'price'     : price
+        }                
+
+        return result
+
 
     @staticmethod
     def search(self, query, url=G2A_DEFAULT_SEARCH_URL):
