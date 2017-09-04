@@ -224,7 +224,7 @@ class G2a:
         #       - Extract source
         img = soup.find_all(class_='games-image')
         if len(img) >= 1:
-            img = img.find('img')
+            img = img[0].find('img')
             if img:
                 if 'src' in img.attrs:
                     img = img['src']
@@ -445,7 +445,7 @@ class Kinguin:
         #   - Get the stripped text
         price = soup.find(class_='category-page__price--price')
         if price:
-            price = price.get_text(strip=True)
+            price = price.get_text(strip=True)[0:]
         else:
             print('[CRAWLER > Kinguin > game > price]: class: category-page__price--price could not be found in html')
             price = None
@@ -558,7 +558,7 @@ class Kinguin:
         # Create a beautifull soup obj
         # We do this using requests to get the html
         # If the request failes we raise a CrawlRequestError
-        soup = BS(get_html(url))
+        soup = BS(get_html(url), 'lxml')
 
         # Find the dictionary containing the results
         # And check if it exists
@@ -634,7 +634,7 @@ class Kinguin:
                     print('[CRAWLER > Kinguin > search > img_url]: could not find class main-image')
 
                 current_game = {
-                    'name'          : name,
+                    'name'          : game_name,
                     'official_price': official_price,
                     'price'         : offered_price,
                     'url'           : url,
@@ -682,7 +682,7 @@ class Gamestop:
 
         # Create bs4 soup obj from html returend by requests
         # If request failes CrawRequestError is raised
-        soup = BS(get_html(url))
+        soup = BS(get_html(url), 'lxml')
 
         # Get the name of the game
         # - Find class ats-prod-title
@@ -702,8 +702,8 @@ class Gamestop:
         #   - 1 - the online price
         prices = soup.find_all(class_='ats-prodBuy-price')
         if len(prices) >= 2:
-            disc_price = prices[0]
-            online_price = prices[1]
+            disc_price = prices[0].get_text(strip=True)
+            online_price = prices[1].get_text(strip=True)
             price = min([disc_price, online_price])
         else:
             price = None
@@ -766,7 +766,7 @@ class Gamestop:
         # - Find all class product
         # - Check if the products list exists
         results = soup.find_all(class_='product')
-        if results >= 1:
+        if len(results) >= 1:
 
             # Loop trough the results
             # And extract all the data 
@@ -868,7 +868,7 @@ class Gameraking:
         return rating
     
     @staticmethod
-    def search_rating(query, url=GAMERANKING_DEFAULT_SEARCH_URL):
+    def search_rating(query, surl=GAMERANKING_DEFAULT_SEARCH_URL):
         '''
         Search gameranking's pc games for the query and return its page and rating
         Args:
@@ -891,15 +891,15 @@ class Gameraking:
         query = query.replace(' ', '+')
         
         # Format the url (place the query in it)
-        url = url.fomat(query)
+        surl = surl.format(query)
 
         # Validate the url
         # If the url is not valid raise CrawlUrlError
-        validate_url(url)
+        validate_url(surl)
 
         # Create the BS soup obj, fill it with requests html
         # If the request failes we raise the CrawlRequestError
-        soup = BS(get_html(url), 'lxml')
+        soup = BS(get_html(surl), 'lxml')
 
         # Get the url of the first game
         # - Find table
@@ -915,6 +915,7 @@ class Gameraking:
                 url = url[0]
                 if 'href' in url.attrs:
                     url = url['href']
+                    url = 'http://www.gamerankings.com{}'.format(url)
                 else:
                     url = None
                     print('[CRAWLER > Gamerating > search > url]: A tag did not have href')
@@ -928,7 +929,7 @@ class Gameraking:
         if rating:
             rating = rating.find_all('span')
             if len(rating) >= 1:
-                rating = rating[0].get_text(stip=True)[:-1]
+                rating = rating[0].get_text(strip=True)[:-1]
             else:
                 rating = None
                 print('[CRAWLER > Gamerating > search > rating]: could not find span')
