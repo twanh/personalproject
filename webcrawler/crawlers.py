@@ -201,7 +201,7 @@ class G2a:
         if len(img) >= 1:
             img = img.find('img')
             if img:
-                if 'src' in img:
+                if 'src' in img.attrs:
                     img = img['src']
                 else:
                     print('[CRAWLER > G2a > game > img]: src was not found in img')
@@ -230,7 +230,7 @@ class G2a:
                 img_slider = []
                 for li in slider:
                     li_img = li.find('img')
-                    if 'src' in li_img:
+                    if 'src' in li_img.attrs:
                         img_slider.append(li_img['src'])
                     else:
                         print('[CRAWLER > G2a > game > img_slider]: li_img has no attribute src')
@@ -473,7 +473,7 @@ class Kinguin:
         if img_url:
             img_url = img_url.find('img')
             if img_url:
-                if 'src' in img_url:
+                if 'src' in img_url.attrs:
                     img_url = img_url['src']
                 else:
                     img_url = None
@@ -575,7 +575,7 @@ class Kinguin:
                         offered_price = prices.find(class_='actual-price')
                         if offered_price:
                             offered_price = offered_price.find('span')
-                            if 'data-no-tax-price' in offered_price:
+                            if 'data-no-tax-price' in offered_price.attrs:
                                 offered_price = offered_price['data-no-tax-price']
                             else:
                                 offered_price = None
@@ -587,7 +587,7 @@ class Kinguin:
                 url = row.find(class_='product-name')
                 if url:
                     url = url.find('a')
-                    if 'href' in url:
+                    if 'href' in url.attrs:
                         url = url['href']
                     else:
                         url = None
@@ -599,7 +599,7 @@ class Kinguin:
                 img_url = row.find(class_='main-image')
                 if img_url:
                     img_url = img_url.find('img')
-                    if 'src' in img_url:
+                    if 'src' in img_url.attrs:
                         img_url = img_url['src']
                     else:
                         img_url = None
@@ -768,7 +768,7 @@ class Gamestop:
                 url = result.find('h3')
                 if url:
                     url = url.find('a')
-                    if 'href' in url:
+                    if 'href' in url.attrs:
                         url = url['href']
                     else:
                         url = None
@@ -789,23 +789,187 @@ class Gamestop:
 
 
 class Gameraking:
-    ''''''
+    ''' Webcrawler for gameranking.com '''
 
     @staticmethod
     def game_rating(self, url):
-        ''''''
-        pass
+        '''
+        Get the rating for a game
+        Args:
+            game_url (str): The url to the game to get the rating of
+        Returns:
+            rating (str): The rating percentage
+        Raises:
+            CrawlUrlError: when the url is not valid
+            CrawlRequestError: when the request failed
+        '''
+        
+        # Declare return variable
+        rating = None
+
+        # Validate url
+        # If url is not valid raise CrawlUrlError
+        validate_url(url)
+
+        # Create soup Bs object from requests html
+        # If the request failes raise CrawlRequestError
+        soup = BS(get_html(url), 'lxml')
+
+        # Get the rating
+        # - Find the id main-col
+        # - Check if it exists
+        #   - Find all tables
+        #   - Check if tables exists
+        #       - Find span in table[0]
+        #       - Check if the span exists
+        #           - Take the text
+        #           - Format the text
+        rating = soup.find(id='main_col')
+        if rating:
+            rating = rating.find_all('table')
+            if len(rating) >= 1:
+                rating = rating[0].find('span')
+                if rating:
+                    # Remove the % sign
+                    rating = rating.get_text(strip=True)[:-1]
+                else:
+                    print('[CRAWLER > Gamerating > game_rating > rating]: Could not find the span')
+            else:
+                print('[CRAWLER > Gamerating > game_rating > rating]: Could not find the table')
+        else:
+            print('[CRAWLER > Gamerating > game_rating > rating]: could not find main_col')
+            
+                    
+        return rating
     
     @staticmethod
     def search_rating(self, query, url=GAMERANKING_DEFAULT_SEARCH_URL):
-        ''''''
-        pass
+        '''
+        Search gameranking's pc games for the query and return its page and rating
+        Args:
+            query (str): The query to search for
+            url (str) (default: The default url): The url to the search page
+        Returns:
+            result (list): A dictionary containing the result
+                [0]: the url to the page
+                [1]: The rating
+        Raises:
+            CrawlURLError: When the url is not valid
+            CrawlRequestError: When the request failed            
+        '''
+        
+        # Declare the vaiables that will be returned
+        url = None
+        rating = None
 
+        # Format the query to fit the url
+        query = query.replace(' ', '+')
+        
+        # Format the url (place the query in it)
+        url = url.fomat(query)
+
+        # Validate the url
+        # If the url is not valid raise CrawlUrlError
+        validate_url(url)
+
+        # Create the BS soup obj, fill it with requests html
+        # If the request failes we raise the CrawlRequestError
+        soup = BS(get_html(url), 'lxml')
+
+        # Get the url of the first game
+        # - Find table
+        # - Check if table exists
+        #   - Find all a tags
+        #   - Check if the a tags exists
+        #       - Check if [0][href] exists
+        #       - Get the [0][href]
+        url = soup.find('table')
+        if url:
+            url = url.find_all('a')
+            if len(url) >= 1:
+                url = url[0]
+                if 'href' in url.attrs:
+                    url = url['href']
+                else:
+                    url = None
+                    print('[CRAWLER > Gamerating > search > url]: A tag did not have href')
+            else:
+                print('[CRAWLER > Gamerating > search > url]: Could not find a tag')
+        else:
+            print('[CRAWLER > Gamerating > search > url]: could not find table')
+
+
+        rating = soup.find('table')
+        if rating:
+            rating = rating.find_all('span')
+            if len(rating) >= 1:
+                rating = rating[0].get_text(stip=True)[:-1]
+            else:
+                rating = None
+                print('[CRAWLER > Gamerating > search > rating]: could not find span')
+        else:
+            rating = None
+            print('[CRAWLER > Gamerating > search > rating]: could not find table')
+
+        return [url, rating]
+        
 
 class Reddit:
-    ''''''
+    ''' Webcrawler for reddit '''
 
     @staticmethod
-    def get_community_link(self, query, url=REDDIT_SEARCH_URL):
-        ''''''
-        pass
+    def get_community_url(self, query, url=REDDIT_SEARCH_URL):
+        '''
+        Get the url to the community page for the queried game
+        Args:
+            query (str): The query/game to search for
+            url (str) (default: default reddit search_url): The url to the reddit search page
+        Returns:
+            community_url (str): the url to the queries/games community subreddit on reddit
+        Raises:
+            CrawlUrlError: When the url is invalid
+            CrawlRequestError: When the request failed
+        '''
+        # Declare return variable
+        community_url = None
+
+        # Format query to fit the url
+        query = query.replace(' ', '+')
+        
+        # Fit the query in the url
+        url = url.format(query)
+
+        # Validate url
+        # If the validation failes CrawlUrlError is thrown
+        validate_url(url)
+
+        # Get the html from the url and create a bs4 soup obj with it
+        soup = BS(get_html(url), 'lxml')
+
+        # Get the community url
+        # - Find all classes search-result-header
+        # - Check if it exists
+        #   - Find an a tag on the [0] element
+        #   - Check if the a tag exists
+        #       - Check if the href exists
+        #       - Get the href
+        community_url = soup.find_all(class_='search-result-header')
+        if len(community_url) >= 1:
+            community_url = community_url[0]
+            community_url = community_url.find('a')
+            if community_url:
+                if 'href' in community_url.attrs:
+                    community_url = community_url['href']
+                else:
+                    print('[CRAWLER > Reddit > search > community url]: Could not find href in a tag')
+            
+            else:
+                print('[CRAWLER > Reddit > search > community url]: Could not find a')
+
+        else:
+            print('[CRAWLER > Reddit > search > community url]: Could not find search-result-header ')
+            
+                    
+
+        # Return the community url
+        return community_url
