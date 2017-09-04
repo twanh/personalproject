@@ -136,7 +136,7 @@ class G2a:
         slider_img  = None
 
         # Request the url and create the BeautifullSoup Obj
-        soup = BS(get_html(url))
+        soup = BS(get_html(url), 'lxml')
 
         # Get the name of the game
         # - Find class nameContent
@@ -270,6 +270,12 @@ class G2a:
         # Define search_results to never fail return
         search_results = []
         
+        # Format the query to fit the url
+        query = query.replace(' ', '+')
+
+        # Create the url with the query        
+        url = url.format(query)
+
         # Validate the url
         # If invalid raise CrawlUrlError
         validate_url(url)
@@ -353,30 +359,278 @@ class G2a:
         return search_results
 
 class Kinguin:
-    ''' ''''
+    ''' Webcrawler for kinguin.net '''
 
     @staticmethod
     def game(self, url):
-        ''''''
-        pass
+        '''
+        Crawl kinguin.nets game's page
+        and extract all relevant information about the game from the page.
+        Args:
+            url (str): The url to the game's page
+        Returns:
+            (dict) The relevant information
+                'name': 'The name of the game',
+                'desc': 'Game description',
+                'img_url': 'The url to the main img',
+                'sys_req': 'The system requirements of the game',
+                'price': 'The price of the game'
+        Raises:
+            CrawlUrlError: If the url is invalid
+            CrawlRequestError: If the request failed
+        '''
+        
+        # Validate the url
+        # If the validation failes
+        # Raise CrawlUrlError
+        validate_url(url)
+
+        # Create the results dict to always return something
+        result = {}
+
+        # Declare all the return variables
+        # We do this because we do not want
+        # to return a not declared variable.
+        # This way we will always return something
+        # even if it does not exist - None
+        name    = None
+        desc    = None
+        img_url = None
+        sys_req = None
+        price   = None
+    
+        # Create the bs4 soup object with the requests html data
+        # If the request fails raise CrawlRequestError
+        soup = BS(get_html(url), 'lxml')
+
+        # Get the name of the game
+        # - Find class product-name
+        # - Check if it exists
+        #   - Get the stripped text
+        name = soup.find(class_='product-name')
+        if name:
+            name = name.get_text(strip=True)
+        else:
+            name = None
+            print('[CRAWLER > Kinguin > game > name]: class: product-name could not be found in html')
+        
+        # Get the price of the game
+        # - Find class category-page__price--price
+        # - Check if it exists
+        #   - Get the stripped text
+        price = soup.find(class_='category-page__price--price')
+        if price:
+            price = price.get_text(strip=True)
+        else:
+            print('[CRAWLER > Kinguin > game > price]: class: category-page__price--price could not be found in html')
+            price = None
+        
+        # Get the description of the game
+        # - Find class category-page__category-description
+        # - Check if it exists
+        #   - Find p tag
+        #   - Check if the p exists
+        #       - Get the stripped text
+        desc = soup.find(class_='category-page__category-description')
+        if desc:
+            desc = desc.find('p')
+            if desc:
+                desc = desc.get_text(strip=True)
+            else:
+                desc = None
+                print('[CRAWLER > Kinguin > game > desc]: Could not find p tag')
+        else:
+            desc = None
+            print('[CRAWLER > Kinguin > game > desc]: class: category-page__category-description could not be found in html')
+        
+        # Get the system requirements for the game
+        # - Find class category-page__category-description
+        # - Check if it exits
+        #   - Find ul tag
+        #   - Check if it exists
+        #       - Take the seccond [1] entry
+        #       - Get the stripped text
+        sys_req = soup.find(class_='category-page__category-description')
+        if sys_req:
+            sys_req = sys_req.find_all('ul')
+            if len(sys_req) >= 2:
+                sys_req = sys_req[1].get_text(strip=True)
+            else:
+                sys_req = None
+                print('[CRAWLER > Kinguin > game > sys_req]: Not enough uls found in class category-page__category-description')
+        else:
+            sys_req = None
+            print('[CRAWLER > Kinguin > game > sys_req]: Could nog find class category-page__category-description')
+        
+        # Get the main image of the game
+        # - Find class category-page__main-image-wrapper
+        # - Check if it exists
+        #   - Find img tag
+        #   - Check if it exists
+        #       - Check if it has a src 
+        #           - Get the src
+        img_url = soup.find('category-page__main-image-wrapper')
+        if img_url:
+            img_url = img_url.find('img')
+            if img_url:
+                if 'src' in img_url:
+                    img_url = img_url['src']
+                else:
+                    img_url = None
+                    print('[CRAWLER > Kinguin > game > img_url]: Could not find src of img')
+            else:
+                img_url = None
+                print('[CRAWLER > Kinguin > game > img_url]: Could not find img tag in class category-page__main-image-wrapper')
+        else:
+            img_url = None
+            print('[CRAWLER > Kinguin > game > img_url]: Could not find class category-page__main-image-wrapper')
+        
+
+        result = {
+            'name': name,
+            'desc': desc,
+            'img_url': img_url,
+            'sys_req': sys_req,
+            'price': price
+        }
+
+        return result
 
     @staticmethod
     def search(self, query, url=KINGUIN_DEFAULT_SEARCH_URL):
-        ''''''
-        pass
+        '''
+        Crawl the search page for the given query and return all teh results
+        Args:
+            query (str): The query to search for
+            url (str) (default: The standart search url): The url that points to the search page
+        Returns:
+            (list) search_results contains the search results formatted in dics with keys:
+                [{
+                    'name'          : 'The results name',
+                    'official_price': 'The official price of the game',
+                    'price'         : 'The price of the game',
+                    'url'           : 'The url to the game page',
+                    'img_url'       : 'The url to the games imgage'
+                }]
+        Raises:
+            CrawlUrlError: When the url is invalid
+            CrawlRequestError: When the request failed
+        '''
 
+        # Create the default return list
+        # We append to this later, and we always have a list ready for return
+        search_results = []
 
+        # Format the query to fit the url
+        query = query.replace(' ', '+')
+        # Create the url with the query
+        url = url.format(query)
+
+        # Check if the url is valid
+        # If it is not valid we raise a CrawlUrlError
+        validate_url(url)
+
+        # Create a beautifull soup obj
+        # We do this using requests to get the html
+        # If the request failes we raise a CrawlRequestError
+        soup = BS(get_html(url))
+
+        # Find the dictionary containing the results
+        # And check if it exists
+        offerDetails = soup.find(id='offerDetails')
+        if offerDetails:
+            # Find all rows in offer details
+            # And check if they exist
+            rows = offerDetails.find_all(class_='row')
+            if len(rows) >= 1:
+                # Loop trough rows
+                # And extract all the data from it
+                for row in rows:
+                    game_name = row.find(class_='product-name')
+                    if game_name:
+                        game_name = game_name.find('a')
+                        if game_name:
+                            game_name = game_name.get_text()
+                        else:
+                            game_name = None
+                            print('[CRAWLER > Kinguin > search > game_name]: Could not find the a tag')
+                    else:
+                        game_name = None
+                        print('[CRAWLER > Kinguin > search > game_name]: Could not find product-name in row')
+                    
+                    prices = row.find(class_='new-price')
+                    if prices:
+                        official_price = prices.find(class_='official-price')
+                        if official_price:
+                            official_price = official_price.find_all('span', class_='price')
+                            if len(official_price) >= 1:
+                                official_price = official_price[1].get_text(strip=True).replace('\u20ac', '')
+                            else:
+                                official_price = None
+                                print('[CRAWLER > Kinguin > search > price]: Could not find the [1] span with class price')
+                        else:
+                            official_price = None
+                            print('[CRAWLER > Kinguin > search > price]: could not find class official-price')
+                        
+                        offered_price = prices.find(class_='actual-price')
+                        if offered_price:
+                            offered_price = offered_price.find('span')
+                            if 'data-no-tax-price' in offered_price:
+                                offered_price = offered_price['data-no-tax-price']
+                            else:
+                                offered_price = None
+                                print('[CRAWLER > Kinguin > search > price]: could not find data-no-tax-price key for actual price')
+                        else:
+                            offered_price = None
+                            print('[CRAWLER > Kinguin > search > price]: Could not find actual price class')
+
+                url = row.find(class_='product-name')
+                if url:
+                    url = url.find('a')
+                    if 'href' in url:
+                        url = url['href']
+                    else:
+                        url = None
+                        print('[CRAWLER > Kinguin > search > url]: could not find href for a')
+                else:
+                    url = None
+                    print('[CRAWLER > Kinguin > search > url]: Could not find class product-name ')
+                           
+                img_url = row.find(class_='main-image')
+                if img_url:
+                    img_url = img_url.find('img')
+                    if 'src' in img_url:
+                        img_url = img_url['src']
+                    else:
+                        img_url = None
+                        print('[CRAWLER > Kinguin > search > img_ur]: could not find src for img tag')
+                else:
+                    img_url = None
+                    print('[CRAWLER > Kinguin > search > img_url]: could not find class main-image')
+
+                current_game = {
+                    'name'          : name,
+                    'official_price': official_price,
+                    'price'         : offered_price,
+                    'url'           : url,
+                    'img_url'       : img_url
+                }
+                search_results.append(current_game)
+
+        return search_results
+                        
+                        
 class Gamestop:
     ''''''
 
     @staticmethod
     def game(self, url):
-        '''''''
+        ''''''
         pass
 
     @staticmethod
     def search(self, query, url=GAMESTOP_DEFAULT_SEARCH_URL):
-        '''''''
+        ''''''
         pass
 
 
