@@ -50,15 +50,15 @@
                         <div class="col-md-3">
                             <h5 class="game-desc-header">User Rating:</h5>
                             {% if game.rating %}
-                                {{game.rating}}
+                                {{game.get_rating}}
                             {% else %}
                                 -
                             {% endif %}
                         </div>
                         <div class="col-md-3">
                             <h5 class="game-desc-header">Community Pages</h5>
-                            {% if game.community_pages %}
-                                {{game.community_pages}}
+                            {% if game.community_reddit %}
+                                <a href="{{game.community_reddit}}">Reddit</a>
                             {% else %}
                                 -
                             {% endif %}

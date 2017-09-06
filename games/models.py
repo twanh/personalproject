@@ -83,8 +83,14 @@ class GameManager(models.Manager):
         if 'gameranking' in urls:
             rating = int(crawlers.Gameraking.game_rating(urls['gameranking']))
         else:
-            rating = int(crawlers.Gameraking.search_rating(game_name)[1])
-
+            rating = crawlers.Gameraking.search_rating(game_name)
+            if len(rating) >= 2:
+                if rating[1]:
+                    rating = decimal.Decimal(rating[1])
+                else:
+                    rating = None
+            else:
+                rating = None
         reddit = crawlers.Reddit.get_community_url(game_name)
 
         images = json.dumps(images)
@@ -187,3 +193,7 @@ class Game(models.Model):
     def get_best_price(self):
         prices = [self.g2a_price, self.kinguin_price, self.greenman_price, self.gamestop_price]
         return min(prices)
+
+    def get_rating(self):
+        ''' Get the rating out of 10 instead of 100 '''
+        return (self.rating/10)

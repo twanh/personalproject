@@ -29,8 +29,11 @@ class GameView(generic.DetailView):
 
             # Get GET params from the request
             # And save the needed ones
+            name = self.request.GET.get('name', '')
             g2a_url = self.request.GET.get('g2a', '')
             kinguin_url = self.request.GET.get('king', '')
+            gamestop_url = self.request.GET.get('gamestop', '')
+            
             # TODO: Add for other sites when crawler is done
 
             # Initialize the GameManager
@@ -40,8 +43,10 @@ class GameView(generic.DetailView):
             # If it fails we return a object of none. 
             # TODO: Find a better way to handle the CrawlUrlError. 
             # The CrawlURLError occurs when no valid url is provided.
+            if name is '':
+                name = None
             try:
-                object =  gm._create_from_crawl(name=None, urls={'g2a': g2a_url, 'kinguin': kinguin_url})
+                object =  gm._create_from_crawl(name=name, urls={'g2a': g2a_url, 'kinguin': kinguin_url, 'gamestop': gamestop_url})
             except CrawlUrlError:
                 # return redirect('index')
                 object = None
