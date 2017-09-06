@@ -105,7 +105,7 @@ class GameManager(models.Manager):
                         kinguin_url = kinguin_url,
                         greenman_price = 'greenman_price',
                         greenman_url = greenman_url,
-                        gamestop_price = 'gamestop_price',
+                        gamestop_price = gamestop_price,
                         gamestop_url = gamestop_url,
                         images = images,
                         rating = rating,
@@ -196,4 +196,4 @@ class Game(models.Model):
 
     def get_rating(self):
         ''' Get the rating out of 10 instead of 100 '''
-        return (self.rating/10)
+        return str(self.rating/10)[:3]

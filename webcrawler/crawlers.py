@@ -445,7 +445,7 @@ class Kinguin:
         #   - Get the stripped text
         price = soup.find(class_='category-page__price--price')
         if price:
-            price = price.get_text(strip=True)[0:]
+            price = price.get_text(strip=True).replace('€', '')
         else:
             print('[CRAWLER > Kinguin > game > price]: class: category-page__price--price could not be found in html')
             price = None
@@ -702,8 +702,8 @@ class Gamestop:
         #   - 1 - the online price
         prices = soup.find_all(class_='ats-prodBuy-price')
         if len(prices) >= 2:
-            disc_price = prices[0].get_text(strip=True)
-            online_price = prices[1].get_text(strip=True)
+            disc_price = prices[0].get_text(strip=True).replace('$', '')
+            online_price = prices[1].get_text(strip=True).replace('$', '')
             price = min([disc_price, online_price])
         else:
             price = None
