@@ -91,7 +91,13 @@ class GameManager(models.Manager):
                     rating = None
             else:
                 rating = None
-        reddit = crawlers.Reddit.get_community_url(game_name)
+
+        try:
+            reddit = crawlers.Reddit.get_community_url(game_name)
+        except crawlers.CrawlRequestError:
+            # Initiate a timer to do this later,
+            # Look trough db and see al reddit nones?
+            reddit = None
 
         images = json.dumps(images)
 
