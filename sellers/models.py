@@ -4,7 +4,7 @@ class Seller(models.Model):
     ''' Model for sellers '''
     name        = models.CharField(max_length=50)
     search_url  = models.URLField()
-    ref_url     = models.URLField()
+    ref_url     = models.URLField(null=True, blank=True)
     logo_url    = models.URLField()
     rating      = models.CharField(max_length=5)
 
