@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 from django.views import generic
 
 from games.models import Game, GameManager
-from webcrawler.crawlers import CrawlUrlError, Reddit
+from webcrawler.crawlers import CrawlRequestError, Reddit
 
 
 class GameView(generic.DetailView):
@@ -25,16 +25,15 @@ class GameView(generic.DetailView):
         # TODO: Find a way to only except the model does not exist exception.
         try:
             object = super(GameView, self).get_object()
-            # print(object.community_reddit)
             if not object.community_reddit:
                 try:
                     reddit = Reddit.get_community_url(object.name)
                     object.community_reddit = reddit
-                except CrawlUrlError:
+                    object.save()
+                except CrawlRequestError:
                     pass
 
-        except Exception:
-
+        except AttributeError:
             # Get GET params from the request
             # And save the needed ones
             name = self.request.GET.get('name', '')
