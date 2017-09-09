@@ -5,5 +5,5 @@ class Seller(models.Model):
     name = models.CharField(max_lenght=50)
     search_url = models.URLField()
     logo_url = models.URLField()
-    rating = models.CharField(max_length=5)
+    rating = models.CharField(max_lenght=5)
 
