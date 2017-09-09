@@ -16,7 +16,7 @@
     <div class="container" style='height:80vh'>
         <div class="game-container">
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-12">
                             {% if game.desc %}
@@ -65,7 +65,57 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">f</div>
+                <div class="col-md-6">
+                    <ul class="seller-list">
+                    <li class="seller-list-tile"><h5>Sellers</h5></li>
+                    {% if game.kinguin_price %}
+                        <li class="seller" id="seller-kinguin">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5>Kinguin</h5> <span>&euro;{{game.kinguin_price}}</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="" class="btn">SHARE</a>
+                                    <a href="" class="btn">PROP</a>
+                                    <a href="" class="btn">Buy Now</a>
+                                </div>
+                            </div>
+                        </li>
+                    {% else %}
+                    {% endif %}
+                    
+                    {% if  game.g2a_price%}
+                    <li class="seller" id="seller-g2a">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>G2A</h5> <span>&euro;{{game.g2a_price}}</span>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="" class="btn">SHARE</a>
+                                <a href="" class="btn">PROP</a>
+                                <a href="" class="btn">Buy Now</a>
+                            </div>
+                        </div>
+                    </li>
+                    {% else %}
+                    {% endif %}
+                    {% if  game.gamestop_price %}
+                    <li class="seller" id="seller-gamestop">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5>Gamestop</h5> <span>&euro;{{game.gamestop_price}}</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="" class="btn">SHARE</a>
+                                    <a href="" class="btn">PROP</a>
+                                    <a href="" class="btn">Buy Now</a>
+                                </div>
+                            </div>
+                        </li>
+                    {% else %}
+                    {% endif %}
+                    </ul>
+                </div>
             </div>
         </div>
         

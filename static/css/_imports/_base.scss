@@ -103,3 +103,7 @@ p{
 .default-bg{
 	background-color: $background-color;
 }
+
+.bold{
+	@include font--roboto(500);
+}

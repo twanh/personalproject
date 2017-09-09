@@ -1,8 +1,27 @@
 @import '_full-size-header.scss';
 
+.container{
+    width: 90vw;
+}
+
 .game-detail-prices{
     margin: 0;
     padding: 0;
     @include font--mono(300);
     font-size: 15px;
 }
+
+.seller-list{
+    list-style: none;
+
+    ul{
+        li{
+            display: inline-block;
+            /* You can also add some margins here to make it look prettier */
+            zoom:1;
+            *display:inline;
+        
+        }
+    }
+}
+

@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 from django.views import generic
 
 from games.models import Game, GameManager
-from webcrawler.crawlers import CrawlRequestError, Reddit
+from webcrawler.crawlers import CrawlRequestError, CrawlUrlError, Reddit
 
 
 class GameView(generic.DetailView):
@@ -33,7 +33,7 @@ class GameView(generic.DetailView):
                 except CrawlRequestError:
                     pass
 
-        except AttributeError:
+        except Exception:
             # Get GET params from the request
             # And save the needed ones
             name = self.request.GET.get('name', '')
@@ -43,8 +43,6 @@ class GameView(generic.DetailView):
             
             if g2a_url is '' and kinguin_url is '' and gamestop_url is '':
                 object = None
-                return object
-
 
             # Initialize the GameManager
             gm = GameManager()
@@ -56,8 +54,9 @@ class GameView(generic.DetailView):
             if name is '':
                 name = None
             try:
-                object =  gm._create_from_crawl(name=name, urls={'g2a': g2a_url, 'kinguin': kinguin_url, 'gamestop': gamestop_url})
+                object = gm._create_from_crawl(name=name, urls={'g2a': g2a_url, 'kinguin': kinguin_url, 'gamestop': gamestop_url})
             except CrawlUrlError:
+                print('crawlurl erro')
                 # return redirect('index')
                 object = None
 
