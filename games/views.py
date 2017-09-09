@@ -42,7 +42,10 @@ class GameView(generic.DetailView):
             kinguin_url = self.request.GET.get('king', '')
             gamestop_url = self.request.GET.get('gamestop', '')
             
-            # TODO: Add for other sites when crawler is done
+            if g2a_url is '' and kinguin_url is '' and gamestop_url is '':
+                object = None
+                return object
+
 
             # Initialize the GameManager
             gm = GameManager()
