@@ -1,0 +1,8 @@
+{% extends "_layouts/_base.html" %}
+
+{% block  content%}
+hi
+    {% for seller in sellers %}
+        {{seller.name}}
+    {% endfor %}
+{% endblock  %}
