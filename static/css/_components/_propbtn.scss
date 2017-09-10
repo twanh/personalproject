@@ -1,0 +1,62 @@
+.prop-btn{
+    border-radius: 25px;    
+    background: white;
+    color:#444;
+    padding: 10px;    
+    padding-left: 40px;
+    font-size: 13px;
+    box-shadow: 1px 1px 10px 0px #222222;
+    i{
+        color: #444;
+        position: absolute;
+        top: -2px;
+        left: 30px;
+        width: 15px;
+        height: 15px;
+        // margin: 20px;
+        font-size: 20px;
+        transform: rotate(-25deg);
+    }
+
+    &:hover{
+        text-decoration: none;
+        color: #444;
+        box-shadow: 1px 1px 10px 2px #222222;
+        i {
+            transform: rotate(-30deg);
+        }
+    }
+    &:active{
+        text-decoration: none;
+        color: #444;
+        box-shadow: 1px 1px 10px 2px #222222;
+    }
+}
+
+.btn-row{
+    margin-top: 15px;
+}
+
+.modal-backdrop, .modal-backdrop.fade.in {
+    opacity: 0.7 !important;
+}
+
+#propModal{
+    .modal-content{
+        .modal-header .modal-title{
+            color: black;                    
+        }
+        .modal-body{
+            color: black;          
+            p{
+                color: black;
+            }      
+            input{
+                color: black;
+            }
+            label{
+                color: black;
+            }
+        }
+    }
+}

@@ -199,6 +199,13 @@ class Game(models.Model):
     def get_best_price(self):
         prices = [self.g2a_price, self.kinguin_price, self.greenman_price, self.gamestop_price]
         return min(prices)
+    
+    def get_best_seller(self):
+        prices = [self.g2a_price, self.kinguin_price, self.gamestop_price]
+        best_price = min(prices)
+        index = prices.index(best_price)
+        print('index' + str(index))
+        return (index + 1)
 
     def get_rating(self):
         ''' Get the rating out of 10 instead of 100 '''
