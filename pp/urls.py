@@ -29,4 +29,7 @@ urlpatterns = [
     # Games Urls
     # /games/
     url(r'^games/', include('games.urls', namespace='games')),
+
+    url(r'^sellers/', include('sellers.urls', namespace='sellers')),
+    
 ]
