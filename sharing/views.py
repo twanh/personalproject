@@ -30,7 +30,7 @@ def proposal_email(request):
     price           = None
     game_url        = reverse('games:game-detail', kwargs={'pk': game.pk})
 
-    if not game.original_price:
+    if game.original_price == '0' or game.original_price is None:
         original_price = game.gamestop_price
     else:
         original_price = game.original_price
