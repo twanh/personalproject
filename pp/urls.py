@@ -31,5 +31,5 @@ urlpatterns = [
     url(r'^games/', include('games.urls', namespace='games')),
 
     url(r'^sellers/', include('sellers.urls', namespace='sellers')),
-    
+    url(r'^sharing/', include('sharing.urls', namespace='sharing')),
 ]
