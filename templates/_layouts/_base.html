@@ -8,11 +8,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+	<title>
+		{% block title %}
+			{{default_title}}
+		{% endblock title %}
+	</title>
+
 	{# Include default css, meta, etc... #}
-	{% include "_includes/_defaults/_head.html" %}</head>
+	{% include "_includes/_defaults/_head.html" %}
 	{% block extra_css %}
 	
 	{% endblock extra_css %}
+</head>
 <body>
 	{% block nav %}
 		{% include "_includes/_components/_nav.html" %}
