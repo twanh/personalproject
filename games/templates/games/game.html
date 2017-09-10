@@ -30,11 +30,14 @@
                             <h5 class="game-desc-header">Original Price:</h5>
                             {% if game.original_price %}
                                 {% if game.original_price > 0 %}
-                                <span class='game-detail-prices'>{{game.original_price}}</span>
+                                <span class='game-detail-prices'>&euro;{{game.original_price}}</span>
                                 {% else %}
-                                    -
+                                    {% if game.gamestop_price %}
+                                        <span class='game-detail-prices'>&euro;{{game.gamestop_price}}</span>                        
+                                    {% else %}
+                                        -
+                                    {% endif %}
                                 {% endif %}
-                                
                             {% else %}
                                 -
                             {% endif %}
