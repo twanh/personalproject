@@ -6,7 +6,6 @@
 {% endblock extra_css %}
 
 {% block all_content %}
-
     <div class="game-header">
         <div class="background-image" style="background-image: url({{ game.image_url }})"></div>
         <div class="content">
@@ -77,7 +76,7 @@
                                 <div class="col-md-6">
                                     <a href="" class="btn">SHARE</a>
                                     <a href="" class="btn">PROP</a>
-                                    <a href="" class="btn">Buy Now</a>
+                                    <a href="{{game.get_kinguin_ref_url}}" class="btn">Buy Now</a>
                                 </div>
                             </div>
                         </li>
@@ -93,7 +92,7 @@
                             <div class="col-md-6">
                                 <a href="" class="btn">SHARE</a>
                                 <a href="" class="btn">PROP</a>
-                                <a href="" class="btn">Buy Now</a>
+                                <a href="{{game.g2a_url}}" class="btn">Buy Now</a>
                             </div>
                         </div>
                     </li>
@@ -108,7 +107,7 @@
                                 <div class="col-md-6">
                                     <a href="" class="btn">SHARE</a>
                                     <a href="" class="btn">PROP</a>
-                                    <a href="" class="btn">Buy Now</a>
+                                    <a href="{{game.gamestop_url}}" class="btn">Buy Now</a>
                                 </div>
                             </div>
                         </li>

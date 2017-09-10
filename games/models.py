@@ -203,3 +203,7 @@ class Game(models.Model):
     def get_rating(self):
         ''' Get the rating out of 10 instead of 100 '''
         return str(self.rating/10)[:3]
+
+    def get_kinguin_ref_url(self):
+        ''' Get the url for the game on kinguin with the refferal code attached '''
+        return ''.join([self.kinguin_url, '?r=42864'])
