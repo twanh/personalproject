@@ -1,8 +1,23 @@
 {% extends "_layouts/_base.html" %}
 
+{% block title %}
+    Sellers
+{% endblock title %}
+
 {% block  content%}
-hi
+<div class="seller-container">
+    <h3>Our Sellers:</h3>
+
     {% for seller in sellers %}
-        {{seller.name}}
+        <div class="row seller-item">
+            <div class="col-md-3">
+                <img src="{{seller.logo_url}}" alt="">
+            </div>
+            <div class="col-md-9">
+                {{seller.desc}}
+            </div>
+        </div>
     {% endfor %}
+</div>
 {% endblock  %}
+
