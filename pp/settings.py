@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     # Apps
     'games',
     'sellers',
+    'sharing',
+    
 ]
 
 MIDDLEWARE = [
