@@ -6,11 +6,12 @@
 {% endblock extra_css %}
 
 {% block all_content %}
-    <div class="game-header">
-        <div class="background-image" style="background-image: url({{ game.image_url }})"></div>
-        <div class="content">
-            <h1>{{game.name}}</h1>
-        </div>
+{% if game %}
+<div class="game-header">
+    <div class="background-image" style="background-image: url({{ game.image_url }})"></div>
+    <div class="content">
+        <h1>{{game.name}}</h1>
+    </div>
     </div>
     <div class="container" style='height:80vh'>
         <div class="game-container">
@@ -118,7 +119,14 @@
             </div>
         </div>
         
-    </div>
+</div>
+{% else %}
+<div class="container" style="height:100vh; text-align:center; margin-top:25vh">
+    <h5>Were sorry, something went wrong.</h5>
+    <a href="#deals">Browse some deals for now...</a>
+</div>
+{% endif %}
+    
     {% comment %} Slider {% endcomment %}
 
     {% comment %} Desc etc {% endcomment %}
