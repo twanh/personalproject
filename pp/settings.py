@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'games',
     'sellers',
     'sharing',
+    'deals',
     
 ]
 
@@ -149,7 +150,6 @@ STATICFILES_FINDERS = (
 COMPRESS_PRECOMPILERS = (
     ('text/x-scss', 'django_libsass.SassCompiler'),
 )
-
 
 # EMAIL 
 EMAIL_USE_TLS = True
