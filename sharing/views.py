@@ -8,6 +8,7 @@ from games.models import Game
 from sellers.models import Seller
 
 def proposal_email(request):
+    ''' Send the proposal emails '''
 
     print('rg', request.GET, len(request.GET))
     get_to          = request.GET.getlist('to')
