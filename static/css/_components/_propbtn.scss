@@ -26,6 +26,14 @@
             transform: rotate(-30deg);
         }
     }
+    &:focus{
+        text-decoration: none;
+        color: #444;
+        box-shadow: 1px 1px 10px 2px #222222;
+        i {
+            transform: rotate(-30deg);
+        }
+    }
     &:active{
         text-decoration: none;
         color: #444;
@@ -57,6 +65,47 @@
             label{
                 color: black;
             }
+        }
+    }
+}
+
+.prop-btn-small {
+    position: relative;
+    border-radius: 20px;    
+    padding: 10px;
+    // padding-top: 13px;
+    padding-left: 30px;
+    font-size: 13px;    
+    background-color:white;
+    color:#444;
+    box-shadow: 1px 1px 10px 0px #222222;    
+    i {
+        color: #444;
+        font-size: 20px;
+        position: absolute;
+        top: 3px;
+        padding-right: 10px;
+        margin-right: 10px;
+        left: 8px;
+        transform: rotate(-30deg);
+    }
+
+    &:hover{
+        text-decoration: none;
+        color: #444;
+        box-shadow: 1px 1px 10px 2px #222222;
+        
+        i {
+            transform: rotate(-50deg);                  
+        }
+    }
+    &:focus{
+        text-decoration: none;
+        color: #444;
+        box-shadow: 1px 1px 10px 2px #222222;
+        
+        i {
+            transform: rotate(-50deg);                  
         }
     }
 }
