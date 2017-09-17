@@ -1,0 +1,19 @@
+.buy-btn{
+    background:white;
+    margin-left: 15px;
+    padding: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-radius: 25px;
+    color: #444;
+    @include font--roboto(800, 13px);
+    box-shadow: 1px 1px 10px 0px #222222;
+    
+    &:hover{
+        box-shadow: 1px 1px 10px 2px #222222;
+        text-decoration: none;
+        @include font--roboto(300, 13px);
+        color:white;
+        background-color:$green-accent;
+    }
+}
