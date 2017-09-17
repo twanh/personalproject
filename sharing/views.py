@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, reverse
+from django.shortcuts import get_object_or_404, reverse, redirect
 from django.http import HttpResponse
 from django.template import Context
 from django.template.loader import render_to_string, get_template
@@ -72,4 +72,4 @@ def proposal_email(request):
     msg.content_subtype = 'html'
     msg.send()
 
-    return HttpResponse('email_two')
+    return redirect('games:game-detail', pk=game.pk)
