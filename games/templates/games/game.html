@@ -68,11 +68,27 @@
                         </div>
                     </div>
                     <div class="row btn-row">
-                           <div class="col-md-12">
+                            <div class="col-md-2">
+                                <a href="#share" class="share-btn" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">share</i></a>                                                      
+                                <!-- <a href="#" class="btn btn-primary">Primary</a> -->
+                                <!-- <a href="#" class="share-btn dropdown-toggle" ><span class="caret"></span></a> -->
+                                <ul class="dropdown-menu">
+                                  <li>
+                                    <a class="twitter-share-button" href="https://twitter.com/intent/tweet?url=https://google.com">
+                                      Tweet!
+                                    </a>  
+                                  </li>
+                                  <li><a href="#">Another action</a></li>
+                                  <li><a href="#">Something else here</a></li>
+                                  <li class="divider"></li>
+                                  <li><a href="#">Separated link</a></li>
+                                </ul>
+                              
+                            </div>   
+                           <div class="col-md-10">
                                 <a href="#" class="prop-btn" data-toggle="modal" data-target="#propModal"><i class="material-icons">send</i> Send Proposal </a>
                            </div>                    
-                    </div>
-                                               
+                    </div>       
                     <div class="modal" id="propModal" role="dialog" tabindex="-1">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -112,7 +128,6 @@
                                     <h5>Kinguin</h5> <span>&euro;{{game.kinguin_price}}</span>
                                 </div>
                                 <div class="col-md-6">
-                                    <a href="" class="btn">SHARE</a>
                                     <a href="#" class="prop-btn-small" data-toggle="modal" data-target="#propModalKing">
                                         <i class="material-icons">send</i>
                                         Proposal
@@ -131,7 +146,6 @@
                                 <h5>G2A</h5> <span>&euro;{{game.g2a_price}}</span>
                             </div>
                             <div class="col-md-6">
-                                <a href="" class="btn">SHARE</a>
                                 <a href="#" class="prop-btn-small" data-toggle="modal" data-target="#propModalG2a">
                                     <i class="material-icons">send</i>
                                     Proposal
@@ -149,7 +163,6 @@
                                     <h5>Gamestop</h5> <span>&euro;{{game.gamestop_price}}</span>
                                 </div>
                                 <div class="col-md-6">
-                                    <a href="" class="btn">SHARE</a>
                                     <a href="#" class="prop-btn-small" data-toggle="modal" data-target="#propModalGameStop">
                                         <i class="material-icons">send</i>
                                         Proposal

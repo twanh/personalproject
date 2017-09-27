@@ -1,0 +1,18 @@
+.share-btn {
+    position: relative;
+    background:white;
+    border-radius: 30px;;
+    padding: 10px;
+    padding-right: 30px;
+    // padding-top: 13px;
+    // margin: 25psx;
+    margin-right: 15px;
+    box-shadow: 1px 1px 10px 0px #222222;
+    i {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        color: #444;
+    }
+
+}
