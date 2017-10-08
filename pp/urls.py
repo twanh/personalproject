@@ -32,4 +32,6 @@ urlpatterns = [
 
     url(r'^sellers/', include('sellers.urls', namespace='sellers')),
     url(r'^sharing/', include('sharing.urls', namespace='sharing')),
+
+    url(r'^search/', include('search.urls', namespace='search')),
 ]
