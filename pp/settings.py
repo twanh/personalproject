@@ -52,8 +52,7 @@ INSTALLED_APPS = [
     'sellers',
     'sharing',
     'deals',
-    'search',
-    
+    'search',  
 ]
 
 MIDDLEWARE = [

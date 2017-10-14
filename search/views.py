@@ -6,6 +6,7 @@ from django.views import generic
 from games.models import Game, GameManager
 from sellers.models import Seller
 
+from webcrawler.crawlers import *
 
 class ListSearch(generic.TemplateView):
     ''' Search a game, return to the game page '''
@@ -20,32 +21,76 @@ class ListSearch(generic.TemplateView):
     #   Return all the results as search items
 
     def get(self, request):
+        ''' Handles get request, and searches '''
 
+        # Get the title the user searched for
         search_title = self.request.GET.get('title', '')
-
+        
+        search_status = 'Searching'
+        # Check if the search title was given
         if search_title != '':
-            # print( Game.objects.filter(
-            #     name__icontains=search_title))
-            
+
+            # Gets all games from  db which contain the search_title
             games = Game.objects.all().filter(name__icontains=search_title)
-            
-            if games:
-                print('not')
-                print(games)
-                # print(game.title)
-                i = 0
-                for game in games:
-                    print(i)
-                    print(game.name)
-                    i+=1
 
-                search_results = 'Found it'
+            # Check if there are any results
+            if len(games) > 0:
+                # Set search results
+                search_status = 'In database'
+                db_results = games
+                sellers_results = None
+            else:
+                db_results = None
+                sellers_results = []
+                search_status = 'Sellers'
 
-            search_results = 'not in db'
-            
+                # Do a search by the sellers
+                g2a_search = G2a.search(search_title)
+                kinguin_search = Kinguin.search(search_title)
+                gamestop_search = Gamestop.search(search_title)
+                
+                # print(type(g2a_search))
+
+                for results in g2a_search:
+                    name = results['name']
+                    price = results['price']
+                    url = results['url']
+                    sellers_results.append([name, price, url])                    
+
+                for results in kinguin_search:
+                    name = results['name']                
+                    price = results['price']
+                    url = results['url']
+                    sellers_results.append([name, price, url])                    
+
+                for results in gamestop_search:
+                    name = results['name']                
+                    price = results['price']
+                    url = results['url']
+                    sellers_results.append([name, price, url])        
+                    
+                # print(type(kinguin_search))
+                # print(type(gamestop_search))
+                
+                    
+
+                # print(g2a_search, kinguin_search, gamestop_search)
         else:
-            search_results = 'not in db'
+            search_status = 'not in db'
+            sellers_results = None
+            db_results = None
 
-        return HttpResponse(search_results)
+        res = []
 
+               
 
+        print(res)
+
+        context = {
+            'status': search_status,
+            'db': db_results,
+            'sellers': sellers_results,
+            'query': search_title
+        }
+
+        return render(request, 'search/search.html', context=context)

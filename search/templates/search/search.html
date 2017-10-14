@@ -1,0 +1,31 @@
+{% extends "_layouts/_base.html" %}
+{% comment %} {% load dict_handling %} {% endcomment %}
+
+{% block content %}
+    <h4>Showing search results for: {{query}} ...</h4>
+    {% if db %}
+        {{db}}
+    {% else %}
+        {% if sellers %}
+            {% for seller_item in sellers %}
+                <div class="result-card">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div class="name">
+                                {{seller_item.0}}
+                            </div>
+                            <div class="desc"></div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="prices">
+                                <span class="price">€{{seller_item.1}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            {{status}}
+        {% endif %}
+    {% endif %}
+{% endblock content %}
