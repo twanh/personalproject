@@ -8,6 +8,62 @@ from sellers.models import Seller
 
 from webcrawler.crawlers import *
 
+# Helper functions
+
+def construct_game_detail_url(name, urls={}):
+    ''' Create the url for the game (details) page '''
+
+    # Create the primary key
+    pk = Game.objects.all().order_by('-id')[0].pk + 1
+
+    # Check if the kinguin url is given
+    # If not find it!
+    if 'kinguin' in urls:
+        kinguin_url = urls['kinguin']
+    else:
+        # Search for the kinguin url
+        king_search_results = Kinguin.search(name)
+        if king_search_results is not None and len(king_search_results) > 0:
+            kinguin_url = king_search_results[0]['url']
+        else:
+            kinguin_url = None
+
+    # Check if the g2a url is given
+    # If not, find it!
+    if 'g2a' in urls:
+        g2a_url = urls['g2a']
+    else:
+        # Search g2a url
+        g2a_search_results = G2a.search(name)
+        if g2a_search_results is not None and len(g2a_search_results) > 0:
+            g2a_url = g2a_search_results[0]['url']
+        else:
+            g2a_url = None
+
+    # Check if the gamestop url is given
+    # If not, find it!
+    if 'gamestop' in urls:
+        gamestop_url = urls['gamestop']
+    else:
+        # Search gamestop url
+        gamestop_search_results = Gamestop.search(name)
+        if gamestop_search_results is not None and len(gamestop_search_results) > 0:
+            gamestop_url = gamestop_search_results[0]['url']
+        else:
+            gamestop_url = None
+
+    # Construct the final url
+    # http://127.0.0.1:8000/games/15/?name=grand+theft+auto+v&g2a=https://www.g2a.com/grand-theft-auto-v-rockstar-key-global-i10000000788017&king=https://www.kinguin.net/category/15836/grand-theft-auto-v-rockstar-digital-download-key/&gamestop=http://www.gamestop.com/pc/games/grand-theft-auto-v/115461
+    name = name.strip().replace(' ', '%20')
+    if gamestop_url and gamestop_url[0] == '/':
+        gamestop_url = 'https://gamestop.com{}'.format(gamestop_url)
+    url = '/games/{0}/?name={1}&g2a={2}&king={3}&gamestop={4}'.format(
+        str(pk), name, g2a_url, kinguin_url, gamestop_url
+    )
+
+    return url
+
+
 class ListSearch(generic.TemplateView):
     ''' Search a game, return to the game page '''
     
@@ -55,24 +111,30 @@ class ListSearch(generic.TemplateView):
                     name = results['name']
                     price = results['price']
                     url = results['url']
-                    sellers_results.append([name, price, url])                    
+                    local_url = construct_game_detail_url(name, urls={'g2a': url})
+                    seller = 'G2a'
+                    
+                    sellers_results.append([name, price, url, seller, local_url])     
 
                 for results in kinguin_search:
                     name = results['name']                
                     price = results['price']
                     url = results['url']
-                    sellers_results.append([name, price, url])                    
+                    local_url = construct_game_detail_url(name, urls={'kinguin': url})                    
+                    seller = 'Kinguin'
+                    sellers_results.append([name, price, url, seller, local_url])                    
 
                 for results in gamestop_search:
                     name = results['name']                
                     price = results['price']
                     url = results['url']
-                    sellers_results.append([name, price, url])        
+                    local_url = construct_game_detail_url(name, urls={'gamestop': url})                    
+                    seller = 'Gamestop'
+                    
+                    sellers_results.append([name, price, url, seller, local_url])        
                     
                 # print(type(kinguin_search))
                 # print(type(gamestop_search))
-                
-                    
 
                 # print(g2a_search, kinguin_search, gamestop_search)
         else:

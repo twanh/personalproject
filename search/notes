@@ -1,0 +1,13 @@
+## Search working:
+
+
+- Check if the games already exists in the database
+    - Yes?
+        - Use those games
+        - Have a way to mark as not found and crawl
+    - No?
+        - Crawl the search for the search Q
+        - Create a page url, for that game,
+          which includes all the urls for the games...
+        - 
+

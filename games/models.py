@@ -43,45 +43,48 @@ class GameManager(models.Manager):
         images           = []
 
         if 'g2a' in urls:
-            g2a_game = crawlers.G2a.game(urls['g2a'])
-            if not game_name:
-                game_name = g2a_game['name']
-            if not game_desc:
-                game_desc = g2a_game['desc']
-            if not img_url:
-                img_url = g2a_game['img']
-            
-            g2a_price = g2a_game['price']
-            g2a_url = urls['g2a']
+            if urls['g2a'] != '':
+                g2a_game = crawlers.G2a.game(urls['g2a'])
+                if not game_name:
+                    game_name = g2a_game['name']
+                if not game_desc:
+                    game_desc = g2a_game['desc']
+                if not img_url:
+                    img_url = g2a_game['img']
+                
+                g2a_price = g2a_game['price']
+                g2a_url = urls['g2a']
 
-            for img in g2a_game['slider_img']:
-                images.append(img)
+                for img in g2a_game['slider_img']:
+                    images.append(img)
 
         if 'kinguin' in urls:
-            kinguin_game = crawlers.Kinguin.game(urls['kinguin'])
-            if not game_name:
-                game_name = kinguin_game['name']
-            if not game_desc:
-                game_desc = kinguin_game['desc']
-            if not img_url:
-                img_url = kinguin_game['img_url']
-            
-            kinguin_price = kinguin_game['price']
-            kinguin_url = urls['kinguin']
+            if urls['kinguin'] != '':
+                kinguin_game = crawlers.Kinguin.game(urls['kinguin'])
+                if not game_name:
+                    game_name = kinguin_game['name']
+                if not game_desc:
+                    game_desc = kinguin_game['desc']
+                if not img_url:
+                    img_url = kinguin_game['img_url']
+                
+                kinguin_price = kinguin_game['price']
+                kinguin_url = urls['kinguin']
 
         if 'gamestop' in urls:
-            gamestop_game = crawlers.Gamestop.game(urls['gamestop'])
-            if not game_name:
-                game_name = gamestop_game['name']
-            if not game_desc:
-                game_desc = game_desc['desc']
-            
-            gamestop_price = gamestop_game['price']
-            gamestop_url = urls['gamestop']        
-
+            if urls['gamestop'] != '':
+                gamestop_game = crawlers.Gamestop.game(urls['gamestop'])
+                if not game_name:
+                    game_name = gamestop_game['name']
+                if not game_desc:
+                    game_desc = game_desc['desc']
+                
+                gamestop_price = gamestop_game['price']
+                gamestop_url = urls['gamestop']        
 
         if 'gameranking' in urls:
-            rating = int(crawlers.Gameraking.game_rating(urls['gameranking']))
+            if urls['gameranking'] != '':
+                rating = int(crawlers.Gameraking.game_rating(urls['gameranking']))
         else:
             rating = crawlers.Gameraking.search_rating(game_name)
             if len(rating) >= 2:
@@ -142,7 +145,8 @@ class Game(models.Model):
 
     # Price on g2a
     g2a_price = models.CharField(max_length=15,
-                            blank=True)
+                            blank=True,
+                            null=True)
 
     # Url on g2a
     g2a_url = models.URLField(verbose_name='G2a URL',
@@ -152,7 +156,8 @@ class Game(models.Model):
 
     # Price on kinguin
     kinguin_price = models.CharField(max_length=15,
-                            blank=True)
+                            blank=True,
+                            null=True)
 
     kinguin_url = models.URLField(verbose_name='Kinguin URL',
                               null=True,
@@ -170,7 +175,8 @@ class Game(models.Model):
 
     # Price on gamestop
     gamestop_price = models.CharField(max_length=15,
-                            blank=True)
+                            blank=True,
+                            null=True)
 
     gamestop_url = models.URLField(verbose_name='Gamestop URL',
                               null=True,
@@ -198,12 +204,31 @@ class Game(models.Model):
 
     def get_best_price(self):
         prices = [self.g2a_price, self.kinguin_price, self.greenman_price, self.gamestop_price]
-        return min(prices)
+        rev_prices = []
+        for price in prices:
+            print('Price!', price)
+            if price is not None:
+                try:
+                    a = int(price[0])
+                    rev_prices.append(price)
+                except ValueError:
+                    pass
+        return min(rev_prices)
+
     
     def get_best_seller(self):
-        prices = [self.g2a_price, self.kinguin_price, self.gamestop_price]
-        best_price = min(prices)
-        index = prices.index(best_price)
+        prices = [self.g2a_price, self.kinguin_price, self.greenman_price, self.gamestop_price]
+        rev_prices = []
+        for price in prices:
+            print('Price!', price)
+            if price is not None:
+                try:
+                    a = int(price[0])
+                    rev_prices.append(price)
+                except ValueError:
+                    pass
+        best_price = min(rev_prices)    
+        index = rev_prices.index(best_price)
         print('index' + str(index))
         return (index + 1)
 

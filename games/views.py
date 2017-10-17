@@ -36,10 +36,10 @@ class GameView(generic.DetailView):
         except Exception:
             # Get GET params from the request
             # And save the needed ones
-            name = self.request.GET.get('name', '')
-            g2a_url = self.request.GET.get('g2a', '')
-            kinguin_url = self.request.GET.get('king', '')
-            gamestop_url = self.request.GET.get('gamestop', '')
+            name = self.request.GET.get('name', None)
+            g2a_url = self.request.GET.get('g2a', None)
+            kinguin_url = self.request.GET.get('king', None)
+            gamestop_url = self.request.GET.get('gamestop', None)
             
             if g2a_url is '' and kinguin_url is '' and gamestop_url is '':
                 object = None
@@ -54,9 +54,47 @@ class GameView(generic.DetailView):
             if name is '':
                 name = None
             try:
-                object = gm._create_from_crawl(name=name, urls={'g2a': g2a_url, 'kinguin': kinguin_url, 'gamestop': gamestop_url})
+                
+                
+                # Check if king urls exists
+                    # Check if g2a url exists
+                        #  Check if gamestop url exists
+                # Check if g2a url exits
+                    # Check if gamestop url exists
+                # Check if gamestop url exists
+                if kinguin_url is not None:
+                    if g2a_url is not None:
+                        if gamestop_url is not None:
+                            object = gm._create_from_crawl(name=name, urls={'g2a': g2a_url, 'kinguin': kinguin_url, 'gamestop': gamestop_url})
+                        else:
+                            object = gm._create_from_crawl(name=name, urls={'g2a': g2a_url, 'kinguin': kinguin_url})
+                    else:
+                        object = gm._create_from_crawl(name=name, urls={'kinguin': kinguin_url})
+                elif g2a_url is not None:
+                    if gamestop_url is not None:
+                        object = gm._create_from_crawl(name=name, urls={'g2a': g2a_url, 'gamestop': gamestop_url})
+                    else:
+                        object = gm._create_from_crawl(name=name, urls={'g2a': g2a_url})
+                else:
+                    object = gm._create_from_crawl(name=name, urls={'gamestop': gamestop_url})
+                    
+                # if g2a_url is not None and kinguin_url is not None and gamestop_url is not None:
+                #     object = gm._create_from_crawl(name=name, urls={'g2a': g2a_url, 'kinguin': kinguin_url, 'gamestop': gamestop_url})
+                # elif g2a_url is not None and kinguin_url is not None:
+                #     object = gm._create_from_crawl(name=name, urls={'g2a': g2a_url, 'kinguin': kinguin_url})
+                # elif kinguin_url is not None and gamestop_url is not None:
+                #     object = gm._create_from_crawl(name=name, urls={'kinguin': kinguin_url, 'gamestop': gamestop_url})
+                # elif gamestop_url is not None and g2a_url is not None:
+                #     object = gm._create_from_crawl(name=name, urls={'g2a': g2a_url, 'gamestop': gamestop_url})
+                # elif g2a
+                # else:
+                #     object = gm._create_from_crawl(name=name, urls={'g2a': g2a_url, 'kinguin': kinguin_url, 'gamestop': gamestop_url})
+
+                    
+
+
             except CrawlUrlError:
-                print('crawlurl erro')
+                print('[CRAWL URL ERROR]')
                 # return redirect('index')
                 object = None
 

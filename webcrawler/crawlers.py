@@ -90,8 +90,9 @@ def validate_url(url):
         return True
 
     except ValidationError:
-        raise CrawlUrlError('Url validion failed for url: {}'.format(url))
-
+        # raise CrawlUrlError('Url validion failed for url: {}'.format(url))
+        return False
+    
     return False
     
 def get_html(url):
