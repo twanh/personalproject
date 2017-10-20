@@ -155,6 +155,8 @@ class ListSearch(generic.TemplateView):
                 for results in gamestop_search:
                     name = results['name']                
                     price = results['price']
+                    if str(price).startswith('BUYDOWNLOAD$'):
+                        price = price[12:]
                     url = results['url']
                     local_url = construct_game_detail_url(name, urls={'gamestop': url})                    
                     seller = 'Gamestop'
