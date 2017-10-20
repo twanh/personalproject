@@ -57,9 +57,37 @@ def construct_game_detail_url(name, urls={}):
     name = name.strip().replace(' ', '%20')
     if gamestop_url and gamestop_url[0] == '/':
         gamestop_url = 'https://gamestop.com{}'.format(gamestop_url)
-    url = '/games/{0}/?name={1}&g2a={2}&king={3}&gamestop={4}'.format(
-        str(pk), name, g2a_url, kinguin_url, gamestop_url
-    )
+
+    if g2a_url and kinguin_url and gamestop_url:
+        url = '/games/{0}/?name={1}&g2a={2}&king={3}&gamestop={4}'.format(
+            str(pk), name, g2a_url, kinguin_url, gamestop_url
+        )
+    elif g2a_url:
+        if kinguin_url:
+            url = '/games/{0}/?name={1}&g2a={2}&king={3}'.format(
+                str(pk), name, g2a_url, kinguin_url
+            )
+        elif gamestop_url:
+            url = '/games/{0}/?name={1}&g2a={2}&gamestop={3}'.format(
+                str(pk), name, g2a_url, gamestop_url
+            )
+        else:
+            url = '/games/{0}/?name={1}&g2a={2}'.format(
+                str(pk), name, g2a_url
+            )
+    elif kinguin_url:
+        if gamestop_url:
+            url = '/games/{0}/?name={1}&king={2}&gamestop={3}'.format(
+                str(pk), name, kinguin_url, gamestop_url
+            )
+        else:
+            url = '/games/{0}/?name={1}&king={2}'.format(
+                str(pk), name, kinguin_url
+            )
+    else:
+        url = '/games/{0}/?name={1}&gamestop={2}'.format(
+                str(pk), name, gamestop_url
+            )
 
     return url
 
