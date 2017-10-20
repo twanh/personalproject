@@ -105,7 +105,11 @@ def get_html(url):
     Raises:
         CrawlRequestError: When the request failed 
     '''
-    r = requests.get(url)
+
+    try: 
+        r = requests.get(url)
+    except requests.exceptions.RequestException:
+        return None
 
     if r.status_code == requests.codes.ok:
         return r.text
