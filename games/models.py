@@ -208,11 +208,12 @@ class Game(models.Model):
         for price in prices:
             print('Price!', price)
             if price is not None:
-                try:
-                    a = int(price[0])
-                    rev_prices.append(price)
-                except ValueError:
-                    pass
+                if len(str(price)) > 0:
+                    try:
+                        a = int(price[0])
+                        rev_prices.append(price)
+                    except ValueError:
+                        pass
         return min(rev_prices)
 
     
@@ -222,11 +223,12 @@ class Game(models.Model):
         for price in prices:
             print('Price!', price)
             if price is not None:
-                try:
-                    a = int(price[0])
-                    rev_prices.append(price)
-                except ValueError:
-                    pass
+                if len(str(price)) > 0:
+                    try:
+                        a = int(price[0])
+                        rev_prices.append(price)
+                    except ValueError:
+                        pass
         best_price = min(rev_prices)    
         index = rev_prices.index(best_price)
         print('index' + str(index))
