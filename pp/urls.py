@@ -27,11 +27,19 @@ urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='index.html'), name='index'),
 
     # Games Urls
-    # /games/
+    # /games/*
     url(r'^games/', include('games.urls', namespace='games')),
 
+    # /sellers/*
     url(r'^sellers/', include('sellers.urls', namespace='sellers')),
+
+    # /sharing/*    
     url(r'^sharing/', include('sharing.urls', namespace='sharing')),
 
+    # /search/*    
     url(r'^search/', include('search.urls', namespace='search')),
+
+    # /deals/*    
+    url(r'^deals/', include('deals.urls', namespace='deals')),
+    
 ]
