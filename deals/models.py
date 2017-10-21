@@ -8,13 +8,27 @@ class Deal(models.Model):
         ('gamestop', 'Gamestop')
     )
 
-    game = models.CharField(max_length=50)
+    game = models.CharField(max_length=50,
+                            null=True,
+                            blank=True)
     seller = models.CharField(max_length=50,
-                              choices=sellers_list)
-    original_price = models.CharField(max_length=4)
-    current_price = models.CharField(max_length=4)
-    header_img = models.URLField()
-    desc = models.TextField()
+                              choices=sellers_list,
+                              null=True,
+                              blank=True)
+    original_price = models.CharField(max_length=4,
+                                    null=True,
+                                    blank=True)
+    current_price = models.CharField(max_length=4,
+                                        null = True,
+                                        blank=True)
+    header_img = models.URLField(
+                            null=True,
+                            blank=True
+    )
+    desc = models.TextField(
+        null=True,
+        blank=True
+    )
 
     
 
