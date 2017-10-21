@@ -1,0 +1,26 @@
+{% extends "_layouts/_base.html" %}
+
+{% block content %}
+
+    <h4 class="title">All Deals</h4>
+
+    <div class="grid row">
+        {% for deal in object_list %}
+            <div class="col-md-4 deal">
+                <div class="deal-card">
+                    <div class="deal-image">
+
+                    </div>
+                    <div class="deal-title">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 deal"></div>
+            <div class="col-md-4 deal"></div>
+            <div class="col-md-4 deal"></div>
+        {% endfor %}
+        
+    </div>
+
+{% endblock content %}  
