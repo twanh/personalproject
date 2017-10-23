@@ -42,7 +42,10 @@ class Deal(models.Model):
     
     
     def get_ref_url(self):
-        if self.seller == 'king':
-            return ''.join([self.buy_url, '?r=42864'])
+        if self.buy_url:
+            if self.seller == 'king':
+                return ''.join([self.buy_url, '?r=42864'])
+            else:
+                return self.buy_url
         else:
-            return buy_url
+            return ''
