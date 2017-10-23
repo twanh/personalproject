@@ -25,6 +25,12 @@ class Deal(models.Model):
                             null=True,
                             blank=True
     )
+
+    buy_url = models.URLField(
+        null=True,
+        blank=True
+    )
+
     desc = models.TextField(
         null=True,
         blank=True
@@ -33,3 +39,10 @@ class Deal(models.Model):
 
     def __str__(self):
         return self.game
+    
+    
+    def get_ref_url(self):
+        if self.seller == 'king':
+            return ''.join([self.buy_url, '?r=42864'])
+        else:
+            return buy_url
