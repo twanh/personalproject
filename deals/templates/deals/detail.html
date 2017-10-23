@@ -1,5 +1,43 @@
 {% extends "_layouts/_base.html" %}
 
+{% block extra_css %}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    rel="stylesheet">
+
+    <style>
+        .img-head{
+            background-image: url({{deal.header_img}});
+        }
+    </style>
+{% endblock extra_css %}
+
 {% block content %}
-    hi
+    <div class="header">
+        {% if deal.header_img %}
+        <div class="img-head"></div>
+        {% else %}
+        {% endif %}
+        <div class="deal-title">
+            <h3>{{deal.game}}</h3>
+            <h5 class="deal-cur-price-head">&euro;{{deal.current_price}}</h5>
+            <h5 class="deal-orig-price-head">&euro;{{deal.original_price}}</h5>
+        </div>
+    </div>
+
+    <div class="deal-desc">
+        <p>
+            {{deal.desc}}
+        </p>
+    </div>
+
+    <div class="back-options">
+            <a href="#go_backl" class='btn btn-default btn-sm'>
+                <i class="material-icons">arrow_back</i>
+                <span>
+                    Return to all deals
+                </span>
+            </a>
+            <a href="#" class="btn btn-success">Buy Now</a>            
+        </div>
+
 {% endblock content %} 

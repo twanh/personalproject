@@ -66,3 +66,65 @@
 .buy_now-btn{
     float: right;
 }
+
+.header{
+
+    .img-head {
+        height: 500px;
+        background-color: #222222;
+        background-position: center;
+        background-attachment: fixed;
+        background-size: 100%;
+        background-repeat: repeat-x;
+    }
+
+    .deal-title {
+        text-align: center;
+        // padding-left: 50px;
+        display: inline-block;
+        vertical-align: middle;
+        h3, h5 {
+            display: inline-block;
+        }
+        .deal-orig-price-head{
+            text-decoration: line-through;
+            color: rgb(158, 158, 158);
+            padding-left: 10px;
+            padding-right: 5px;
+            
+        }
+        .deal-cur-price-head{
+            padding-left: 30px;
+            color: white;
+            font-size: 34px;
+        }
+    }    
+
+}
+
+
+.back-options{
+    display: inline-block;
+    a {
+        text-decoration: none;
+        font-size: 16px;
+        color: white;
+        padding-top: -10px;
+
+        .material-icons {
+            vertical-align: middle;
+        }
+      
+        span {
+            display: inline-block;
+            font-size: 15px;
+            vertical-align: middle;
+            padding-top: 5px;
+        }
+    }
+}
+
+.deal-desc {
+    margin-top: 10px;
+    margin: 0 auto;
+}
