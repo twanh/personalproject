@@ -14,17 +14,55 @@
     margin: 10px 0px 10px 0px;
     min-width: 100px;
     min-height: 200px;
+    background: #222222;
+    box-shadow: #3e3939 1px 0px 3px 1px;
+
+    &:hover{
+        box-shadow:#3e3939 1px 0px 7px 5px
+    }
+
 }
 
 .deal-overlay {
  height: 70px;
- background-color: rgba(110, 110, 110, .5);
+ background-color: rgba(110, 110, 110, .8);
  margin: -10px;
- margin-top: 130px;
+ margin-top: 120px;
  margin-bottom: -10px;
  padding: -10px;
 }
 
 .deal-name{
     margin-top: -65px;
+    font-size: 16px;
+
+    a{
+        text-decoration: none;
+        color: white;
+        font-size: 16px;
+        &:hover{
+            text-decoration: none;
+            color: #18bc9c;
+        }
+    }
+}
+
+.deal-orig-price{
+    display: inline-block;
+    @include font--mono();
+    color: rgb(199, 197, 197);
+    text-decoration: line-through;
+    
+}
+
+.deal-cur-price {
+    padding-left: 10px;
+    display: inline;
+    color: white;
+    font-size: 14px;
+    @include font--mono(300);
+}
+
+.buy_now-btn{
+    float: right;
 }

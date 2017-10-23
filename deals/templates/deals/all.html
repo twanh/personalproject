@@ -5,15 +5,15 @@
         {% for deal in object_list %}
             {% if deal.header_img %}
                 #deal-{{deal.pk}}{
-                    background: black;
+                    background: #222222;
                     background-image: url({{deal.header_img}});
                     background-repeat: no-repeat;
                     background-position: center;
-                    background-size: 100%;                    
+                    background-size: 130%;                    
                 }
             {% else %}
                 #deal-{{deal.pk}} {
-                    background: black;
+                    background: #222222;
                 }
             {% endif %}
             
@@ -31,9 +31,12 @@
                     <div class="deal-image">
                         <div class="deal-title">
                             <div class="deal-overlay"></div>
-                            <div class="deal-name">{{deal.game}}</div>
-                            <div class="deal-orig-price"></div>
-                            <div class="deal-cur-price"></div>
+                            <div class="deal-name"><a href="#buynow">{{deal.game}}</a></div>
+                            <div class="deal-orig-price">&euro;{{deal.original_price}}</div>
+                            <div class="deal-cur-price">&euro;{{deal.current_price}}</div>
+                            <div class="deal-cta">
+                                <a href="#buynow" class="buy_now-btn">Buy Now!</a>
+                            </div>
                         </div>                                          
                     </div>
                 
@@ -42,5 +45,12 @@
         {% endfor %}
         
     </div>
+    
+    {% include "_includes/_components/_footer.html" %}
 
 {% endblock content %}  
+
+
+{% block footer %}
+
+{% endblock footer %}
