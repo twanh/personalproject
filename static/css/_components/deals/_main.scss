@@ -1,0 +1,30 @@
+.grid {
+    width: 80%;
+    margin: 0 auto;
+
+    .title{
+        padding-left: 15px;
+    }
+
+}
+
+.deal-card {
+    padding: 10px;
+    // Top right bottom left
+    margin: 10px 0px 10px 0px;
+    min-width: 100px;
+    min-height: 200px;
+}
+
+.deal-overlay {
+ height: 70px;
+ background-color: rgba(110, 110, 110, .5);
+ margin: -10px;
+ margin-top: 130px;
+ margin-bottom: -10px;
+ padding: -10px;
+}
+
+.deal-name{
+    margin-top: -65px;
+}

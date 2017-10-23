@@ -1,24 +1,44 @@
 {% extends "_layouts/_base.html" %}
 
+{% block extra_css %}
+    <style>
+        {% for deal in object_list %}
+            {% if deal.header_img %}
+                #deal-{{deal.pk}}{
+                    background: black;
+                    background-image: url({{deal.header_img}});
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-size: 100%;                    
+                }
+            {% else %}
+                #deal-{{deal.pk}} {
+                    background: black;
+                }
+            {% endif %}
+            
+        {% endfor %}
+    </style>
+{% endblock extra_css %}
+
 {% block content %}
 
-    <h4 class="title">All Deals</h4>
-
     <div class="grid row">
+        <h4 class="title">All Deals</h4>
         {% for deal in object_list %}
             <div class="col-md-4 deal">
-                <div class="deal-card">
+                <div class="deal-card" id="deal-{{deal.pk}}">
                     <div class="deal-image">
-
+                        <div class="deal-title">
+                            <div class="deal-overlay"></div>
+                            <div class="deal-name">{{deal.game}}</div>
+                            <div class="deal-orig-price"></div>
+                            <div class="deal-cur-price"></div>
+                        </div>                                          
                     </div>
-                    <div class="deal-title">
-
-                    </div>
+                
                 </div>
             </div>
-            <div class="col-md-4 deal"></div>
-            <div class="col-md-4 deal"></div>
-            <div class="col-md-4 deal"></div>
         {% endfor %}
         
     </div>
