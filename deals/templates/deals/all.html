@@ -35,7 +35,7 @@
                             <div class="deal-orig-price">&euro;{{deal.original_price}}</div>
                             <div class="deal-cur-price">&euro;{{deal.current_price}}</div>
                             <div class="deal-cta">
-                                <a href="#buynow" class="buy_now-btn">Buy Now!</a>
+                                <a href="{% url 'deals:detail' deal.pk %}" class="buy_now-btn">Buy Now!</a>
                             </div>
                         </div>                                          
                     </div>

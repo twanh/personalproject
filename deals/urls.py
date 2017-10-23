@@ -9,5 +9,5 @@ urlpatterns = [
 
     # Details deal page
     # /deals/<pk>/
-    url(r'^(?P<pk>\d+)/$', DetailDeal.as_view(), name='index')
+    url(r'^(?P<pk>\d+)/$', DetailDeal.as_view(), name='detail')
 ]
