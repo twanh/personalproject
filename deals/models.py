@@ -40,7 +40,6 @@ class Deal(models.Model):
     def __str__(self):
         return self.game
     
-    
     def get_ref_url(self):
         if self.buy_url:
             if self.seller == 'king':
