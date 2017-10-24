@@ -17,15 +17,24 @@
 
 	{# Include default css, meta, etc... #}
 	{% include "_includes/_defaults/_head.html" %}
-	{% block extra_css %}
+	{% block extra_css %}{% endblock extra_css %}
 	
-	{% endblock extra_css %}
 </head>
 <body>
+
+	<!-- 
+		Navigatiton block
+		Import navigation 
+	-->
 	{% block nav %}
 		{% include "_includes/_components/_nav.html" %}
 	{% endblock nav %}
 	
+	<!--
+		All content block
+		Container to have the same margins on all page
+		Content block for most cases
+	-->
 	{% block all_content%}
 	<div class="container" style="height:100vh">
 		{% block content %}
@@ -34,6 +43,10 @@
 	{% endblock %}
 
 	
+	<!-- 
+		Block footer
+		Include footer (can be overwritten!!)
+	 -->
 	{% block footer %}
 		{% include "_includes/_components/_footer.html" %}
 	{% endblock footer %}
