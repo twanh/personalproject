@@ -17,6 +17,8 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.views.generic import TemplateView
 
+from general.views import Index
+
 urlpatterns = [
     # Admin Urls
     # /admin/*
@@ -24,7 +26,7 @@ urlpatterns = [
 
     # Index View
     # /
-    url(r'^$', TemplateView.as_view(template_name='index.html'), name='index'),
+    url(r'^$', Index.as_view(), name='index'),
 
     # Games Urls
     # /games/*

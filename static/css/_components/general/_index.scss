@@ -1,0 +1,61 @@
+.full-screen-img {
+    .head-nav {
+        #site-title {
+            padding: 10px;
+            font-size: 30px;
+            a {
+                font-size: 30px;
+            }
+        }
+        #deals-link {
+            float: right;
+            margin: 20px;
+            margin-top: -45px;
+            text-shadow:#444 1px 1px 1px;
+            a {
+                font-size: 16px;
+                // background: rgba(252, 109, 109, 0.623);
+                padding: 10px;
+                color: white;
+            }
+        }
+    }
+    .game-info {
+        vertical-align: middle;
+        text-shadow: #444 1px 1px 1px;
+        .game-title {
+            margin-left: 50px;
+            margin-top: 15vh;
+        }
+        .game-price {
+            margin-left: 50px;
+
+            font-family: 'Roboto Mono';
+           
+        }
+
+        .buy-now-btn {
+            text-shadow: none;
+            margin-left: 50px;
+        }
+    }
+}
+
+.featured-deals {
+    width: 80%;
+    margin: 20px auto;
+}
+
+.index-search {
+    margin: 20px auto;
+
+    .search-bar {
+        margin: 0 auto;
+
+        .search-button {
+            margin: 0 auto;
+            top: 10px;
+            left: 35%;
+        }
+    }
+}

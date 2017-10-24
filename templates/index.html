@@ -1,6 +1,94 @@
 {% extends "_layouts/_base.html" %}
 
+{% block nav %}
+
+{% endblock nav %}
+
+{% block extra_css %}
+    <style>
+        .full-screen-img {
+            height: 70vh;
+            background-color: #444;
+            background-image: url({{header_img}});
+            background-position: center;
+            background-size: 70%;
+            filter:opacity(70);
+        }
+
+        {% for deal in object_list %}
+        {% if deal.header_img %}
+            #deal-{{deal.pk}}{
+                background: #222222;
+                background-image: url({{deal.header_img}});
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: 130%;                    
+            }
+        {% else %}
+            #deal-{{deal.pk}} {
+                background: #222222;
+            }
+        {% endif %}
+        
+    {% endfor %}
+
+    </style>
+{% endblock extra_css %}
+
 <!-- Inside the container -->
-{% block content %}
-    This is the index
-{% endblock content %}
+{% block all_content %}
+
+    <div class="header">
+        <div class="full-screen-img">
+            <div class="head-nav">
+                <div id="site-title">
+                    <a href="{% url 'index' %}">{{app_name}}</a>
+                </div>
+                <div id="deals-link">
+                    <a href="{% url 'deals:index' %}">Deals</a>
+                </div>
+
+            </div>
+            <div class="game-info">
+                <div class="game-title">
+                    <h1>{{index_header.name}}</h1>
+                </div>
+                <div class="game-price">
+                    <h3>&euro;{{index_header.get_best_price}}</h3>
+                </div>
+                <div class="buy-now-btn"><a href="{% url 'games:game-detail' index_header.pk %}" class="btn btn-success">Buy Now</a></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="index-search">
+            {% include "_includes/_components/_searchbar-small.html" %}
+        </div>
+        <div class="featured-deals">
+            {% for deal in object_list %}
+            {% if forloop.counter0 >= 9 %}
+
+            {% else %}
+            <div class="col-md-4 deal">
+                    <div class="deal-card" id="deal-{{deal.pk}}">
+                        <div class="deal-image">
+                            <div class="deal-title">
+                                <div class="deal-overlay"></div>
+                                <div class="deal-name"><a href="#buynow">{{deal.game}}</a></div>
+                                <div class="deal-orig-price">&euro;{{deal.original_price}}</div>
+                                <div class="deal-cur-price">&euro;{{deal.current_price}}</div>
+                                <div class="deal-cta">
+                                    <a href="{% url 'deals:detail' deal.pk %}" class="buy_now-btn">Buy Now!</a>
+                                </div>
+                            </div>                                          
+                        </div>
+                    
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+        <a href="{% url 'deals:index' %}" style="float: right; margin-right: 15px;">View More >></a>
+    </div>
+    </div>  
+{% endblock all_content %}
