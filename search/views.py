@@ -110,6 +110,8 @@ class ListSearch(generic.TemplateView):
         # Get the title the user searched for
         search_title = self.request.GET.get('title', '')
         
+        force_more = self.request.GET.get('forceMore', 'false')
+
         search_status = 'Searching'
         # Check if the search title was given
         if search_title != '':
@@ -123,6 +125,46 @@ class ListSearch(generic.TemplateView):
                 search_status = 'In database'
                 db_results = games
                 sellers_results = None
+
+                if force_more != 'false':
+                    sellers_results = []
+                    search_status = 'Sellers'
+
+                    # Do a search by the sellers
+                    g2a_search = G2a.search(search_title)
+                    kinguin_search = Kinguin.search(search_title)
+                    gamestop_search = Gamestop.search(search_title)
+                    
+                    # print(type(g2a_search))
+
+                    for results in g2a_search:
+                        name = results['name']
+                        price = results['price']
+                        url = results['url']
+                        local_url = construct_game_detail_url(name, urls={'g2a': url})
+                        seller = 'G2a'
+                        
+                        sellers_results.append([name, price, url, seller, local_url])     
+
+                    for results in kinguin_search:
+                        name = results['name']                
+                        price = results['price']
+                        url = results['url']
+                        local_url = construct_game_detail_url(name, urls={'kinguin': url})                    
+                        seller = 'Kinguin'
+                        sellers_results.append([name, price, url, seller, local_url])                    
+
+                    for results in gamestop_search:
+                        name = results['name']                
+                        price = results['price']
+                        if str(price).startswith('BUYDOWNLOAD$'):
+                            price = price[12:]
+                        url = results['url']
+                        local_url = construct_game_detail_url(name, urls={'gamestop': url})                    
+                        seller = 'Gamestop'
+                        
+                        sellers_results.append([name, price, url, seller, local_url])        
+
             else:
                 db_results = None
                 sellers_results = []
