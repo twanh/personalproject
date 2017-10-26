@@ -47,6 +47,10 @@
                 {% else %}
                 {% endif %}
         {% endif %}
+        {% if db %}
+            <a href="#"  onclick="javascript: window.location.assign(window.location.href+='&forceMore=true');" class="more-results-btn">View more results >></a>                        
+        {% else %}
+        {% endif %}
     </div>
     {% include "_includes/_components/_footer.html" %}
 
