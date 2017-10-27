@@ -17,7 +17,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.views.generic import TemplateView
 
-from general.views import Index, About
+from general.views import Index, About, Contact
 
 urlpatterns = [
     # Admin Urls
@@ -32,6 +32,9 @@ urlpatterns = [
     # /about/
     url(r'^about/$', About.as_view(), name='about'),
     
+    # Contact view
+    # /contact/
+    url(r'^about/$', Contact.as_view(), name='contact'),
     
     # Games Urls
     # /games/*
