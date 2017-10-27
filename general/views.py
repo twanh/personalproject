@@ -18,3 +18,7 @@ class Index(ListView):
         context['header_img'] = 'http://ll-c.ooyala.com/e1/FxZnluYjE6hEoFHu02TdwQqWA8tlkcwv/promo322349625'
         return context
 
+
+class About(TemplateView):
+    ''' Render the about page '''
+    template_name = 'general/about.html'

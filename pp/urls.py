@@ -8,7 +8,7 @@ Function views
     2. Add a URL to urlpatterns:  url(r'^$', views.home, name='home')
 Class-based views
     1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  url(r'^$', Home.as_view(), name='home')
+    2. Add a URL to urlpatterns:  url(r'^\$', Home.as_view(), name='home')
 Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
@@ -17,7 +17,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.views.generic import TemplateView
 
-from general.views import Index
+from general.views import Index, About
 
 urlpatterns = [
     # Admin Urls
@@ -27,6 +27,9 @@ urlpatterns = [
     # Index View
     # /
     url(r'^$', Index.as_view(), name='index'),
+
+    url(r'^about/$', About.as_view(), name='index'),
+    
 
     # Games Urls
     # /games/*
