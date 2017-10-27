@@ -34,7 +34,7 @@ urlpatterns = [
     
     # Contact view
     # /contact/
-    url(r'^about/$', Contact.as_view(), name='contact'),
+    url(r'^contact/$', Contact.as_view(), name='contact'),
     
     # Games Urls
     # /games/*
