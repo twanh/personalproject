@@ -30,9 +30,9 @@ urlpatterns = [
 
     # About view
     # /about/
-    url(r'^about/$', About.as_view(), name='index'),
+    url(r'^about/$', About.as_view(), name='about'),
     
-
+    
     # Games Urls
     # /games/*
     url(r'^games/', include('games.urls', namespace='games')),
