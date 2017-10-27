@@ -28,6 +28,8 @@ urlpatterns = [
     # /
     url(r'^$', Index.as_view(), name='index'),
 
+    # About view
+    # /about/
     url(r'^about/$', About.as_view(), name='index'),
     
 
