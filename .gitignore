@@ -6,4 +6,3 @@ swebcrawler/__pycache__/crawler.cpython-36.pyc
 *.pyc
 *.pyo
 CACHE
-pp/gmailcred.py
