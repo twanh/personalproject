@@ -1,8 +1,10 @@
-from django.shortcuts import render
-from django.views.generic import ListView, TemplateView
+from django.shortcuts import render, reverse
+from django.views.generic import ListView, TemplateView, FormView
 
 from deals.models import Deal
 from games.models import Game
+
+from general import forms
 
 class Index(ListView):
     model = Deal
@@ -22,3 +24,9 @@ class Index(ListView):
 class About(TemplateView):
     ''' Render the about page '''
     template_name = 'general/about.html'
+
+
+class Contact(TemplateView):
+    ''' Render contact page '''
+
+    template_name = 'general/contact.html'

@@ -1,0 +1,21 @@
+{% extends "_layouts/_base.html" %}
+
+{% block content %}
+<h1>Contact</h1>
+<form action="https://formspree.io/huiskenstwan@gmail.com"
+method="POST">
+
+    <label for="name">Your Name:</label>
+    <input type="text" class='form-control' name="name" placeholder="John Doe">
+    <label for="email">Your Email</label>
+    <input type="email" name="email" class='form-control' placeholder="example@example.com">
+    <label for="message">Your Message:</label>
+    <textarea name="message" class='form-control' placeholder="Up to you ;)"></textarea>
+    <input type="text" name="_gotcha" style="display:none" />
+    <button type="submit" class="btn">Send</button>
+
+    {% comment %}Add this!!@#! <input type="hidden" name="_next" value="" /> {% endcomment %}
+</form>
+
+
+{% endblock content %}
