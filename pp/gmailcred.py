@@ -1,5 +1,5 @@
 class G:
     ''' Store gmail creds '''
-    HOST     = 'huiskenstwan@gmail.com'
-    PASSWORD = 'ekavlnyobifvaela'
+    HOST     = 'trivagame.email@gmail.com'
+    PASSWORD = 'Tzsefv159pp'
 
