@@ -7,7 +7,7 @@ django-filter==1.0.4
 django-libsass==0.7
 djangorestframework==3.11.2
 libsass==0.13.2
-lxml==3.8.0
+lxml==4.6.2
 Markdown==2.6.8
 mccabe==0.6.1
 pylint==1.7.2
